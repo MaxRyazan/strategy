@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, Ref, ref} from "vue";
 import HeaderControlsButtons from '@/components/header/HeaderControlsButtons.vue'
 import PlanetComponent from "@/components/planets/PlanetComponent.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
 import {usePlayerStore} from "@/pinia/playerStore.ts";
+import {Player} from "@/typescript/classes/Player.ts";
 
 const isPlanetVisible = ref(false)
 const planetStore = usePlanetStore()
 const playerStore = usePlayerStore()
+const player = ref() as Ref<Player>
 
+onMounted(() => {
+    player.value = playerStore.player
+})
 function showSelectedPlanet(){
     isPlanetVisible.value = !isPlanetVisible.value
-    planetStore.selectedPlanet = playerStore.player.account.homePlanet
-    console.log(planetStore.selectedPlanet)
+    planetStore.selectedPlanet = player.value.account.homePlanet
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <reusable-dialog @closeDialog="$emit('close')" header="Планета" :visible="props.isPlanetVisible" style="width: 80%; margin: 0 auto">
+    <reusable-dialog @closeDialog="$emit('close')" :header="planetStore.selectedPlanet.name" :visible="props.isPlanetVisible" style="width: 80%; margin: 0 auto">
         <div class="planet_wrapper">
             <div class="left">
                 <div class="left__img">

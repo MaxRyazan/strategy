@@ -1,9 +1,8 @@
 import {defineStore} from "pinia";
-import {Ref, ref} from "vue";
-import {Player} from "@/typescript/classes/Player.ts";
+import {ref} from "vue";
 
 export const usePlayerStore: any = defineStore('playerStore', {
-    state: (): {player: Ref<Player|null>} => ({
+    state: (): any => ({
         player: ref(null)
     })
 })
