@@ -1,6 +1,5 @@
 <template>
-    <Dialog :closable="false" :blockScroll="true" draggable header="Планета" v-model:visible="props.isPlanetVisible"
-            style="width:98%; min-width: 310px; max-width: 1800px; position: relative">
+    <reusable-dialog header="Планета" :visible="props.isPlanetVisible" style="width: 80%; margin: 0 auto">
         <div class="planet_wrapper">
             <div class="left">
                 <div class="left__img">
@@ -42,13 +41,13 @@
             </div>
             <div class="right"></div>
         </div>
-        <div class="planet_resize"></div>
-    </Dialog>
+    </reusable-dialog>
 </template>
 
 <script setup lang="ts">
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import {ref} from 'vue'
+import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 const props = defineProps<{
     isPlanetVisible: boolean
 }>()

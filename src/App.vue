@@ -6,30 +6,30 @@ import PlanetComponent from "@/components/planets/PlanetComponent.vue";
 const isPlanetVisible = ref(false)
 
 
-function mousedown(mdEvent: MouseEvent) {
-    window.addEventListener('mousemove', mousemove)
-    window.addEventListener('mouseup', mouseup)
-    const currX = mdEvent.clientX
-    const containerForResize = document.querySelector('.planet') as HTMLElement
-    const blockWidth = containerForResize.clientWidth
+// function mousedown(mdEvent: MouseEvent) {
+//     window.addEventListener('mousemove', mousemove)
+//     window.addEventListener('mouseup', mouseup)
+//     const currX = mdEvent.clientX
+//     const containerForResize = document.querySelector('.planet') as HTMLElement
+//     const blockWidth = containerForResize.clientWidth
+//
+//     function mousemove(mmEvent: MouseEvent) {
+//         const transition = currX - mmEvent.clientX
+//         if(blockWidth - transition >= 320){
+//             containerForResize.style.width = blockWidth - transition + 'px'
+//         }
+//     }
+//     function mouseup(){
+//         window.removeEventListener('mousemove', mousemove)
+//     }
+// }
 
-    function mousemove(mmEvent: MouseEvent) {
-        const transition = currX - mmEvent.clientX
-        if(blockWidth - transition >= 320){
-            containerForResize.style.width = blockWidth - transition + 'px'
-        }
-    }
-    function mouseup(){
-        window.removeEventListener('mousemove', mousemove)
-    }
-}
-
-watch(isPlanetVisible, () => {
-    nextTick(() => {
-        const resizer = document.querySelector('.planet_resize') as HTMLElement
-        resizer.addEventListener('mousedown', mousedown)
-    })
-})
+// watch(isPlanetVisible, () => {
+//     nextTick(() => {
+//         const resizer = document.querySelector('.planet_resize') as HTMLElement
+//         resizer.addEventListener('mousedown', mousedown)
+//     })
+// })
 
 
 </script>
