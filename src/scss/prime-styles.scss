@@ -1,6 +1,14 @@
+@import "vars";
 .p-dialog-header {
-  background-color: darkslateblue;
-  border: 1px solid white;
-  padding: 2px 20px;
+  background-color: $primeViolet;
+  border-bottom: 2px solid white;
+  padding: 2px 40px;
   min-height: 24px;
+  cursor: default;
+  color: darkorange;
+  justify-content: center !important;
+}
+.p-dialog{
+  border: 2px solid white;
+  border-radius: 4px;
 }

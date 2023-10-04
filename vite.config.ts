@@ -11,4 +11,11 @@ export default defineConfig({
       "@reusable": fileURLToPath(new URL("./src/components/reusable", import.meta.url)),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: '@import "src/scss/vars.scss";'
+      }
+    }
+  }
 })

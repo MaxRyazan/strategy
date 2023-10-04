@@ -61,7 +61,6 @@ const someValue = ref(222)
 .planet_wrapper {
   width: 100%;
   color: white;
-  border: 1px solid white;
   padding: 3px;
   display: flex;
   gap: 2px;
@@ -79,7 +78,7 @@ const someValue = ref(222)
   display: flex;
   flex-direction: column;
   width: 25%;
-  padding: 5px;
+  padding: 5px 0;
   border-right: 2px solid white;
 }
 .left__item{
