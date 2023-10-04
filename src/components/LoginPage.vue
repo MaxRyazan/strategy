@@ -3,7 +3,9 @@
 </script>
 
 <template>
-    <router-view />
+<div>
+    login
+</div>
 </template>
 
 <style scoped lang="scss">
