@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import {nextTick, onMounted} from "vue";
+import {nextTick, onMounted, ref, watch} from "vue";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
+
+const currentWidth = ref()
+const fontSize = ref()
 
 const props = defineProps<{
     visible: boolean
@@ -9,10 +12,28 @@ const props = defineProps<{
 defineEmits<{
     (e:'closeDialog'):void
 }>()
+
+const adaptive = () => {
+    if(currentWidth.value >= 1600) fontSize.value = 16
+    if(currentWidth.value < 1600) fontSize.value = 14
+    if(currentWidth.value >= 1024 && currentWidth.value < 1600) fontSize.value = 14
+    if(currentWidth.value < 1024) fontSize.value = 12
+    if(currentWidth.value >= 800 && currentWidth.value < 1024) fontSize.value = 12
+    if(currentWidth.value < 800) fontSize.value = 10
+}
+
+watch(currentWidth, () => {
+    adaptive()
+})
+
 onMounted(() => {
     nextTick(() => {
-        const resizer = document.querySelector('.planet_resize') as HTMLElement
+        const resizer: HTMLElement = document.querySelector('.planet_resize') as HTMLElement
+        const container: HTMLElement = document.querySelector('.for_resize')
         resizer.addEventListener('mousedown', mousedown)
+        currentWidth.value = container.clientWidth
+        adaptive()
+        container.style.fontSize = fontSize.value + 'px'
     })
 })
 
@@ -25,8 +46,10 @@ function mousedown(mdEvent: MouseEvent) {
 
     function mousemove(mmEvent: MouseEvent) {
         const transition = currX - mmEvent.clientX
+        currentWidth.value = blockWidth - transition
         if(blockWidth - transition >= 320){
             containerForResize.style.width = blockWidth - transition + 'px'
+            containerForResize.style.fontSize = fontSize.value + 'px'
         }
     }
     function mouseup(){
