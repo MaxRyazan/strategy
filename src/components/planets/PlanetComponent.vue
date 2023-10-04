@@ -1,5 +1,5 @@
 <template>
-    <reusable-dialog header="Планета" :visible="props.isPlanetVisible" style="width: 80%; margin: 0 auto">
+    <reusable-dialog @closeDialog="$emit('close')" header="Планета" :visible="props.isPlanetVisible" style="width: 80%; margin: 0 auto">
         <div class="planet_wrapper">
             <div class="left">
                 <div class="left__img">
@@ -45,8 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import {ref} from 'vue'
+import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 const props = defineProps<{
     isPlanetVisible: boolean

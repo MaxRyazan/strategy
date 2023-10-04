@@ -1,35 +1,9 @@
 <script setup lang="ts">
-import {nextTick, ref, watch} from "vue";
+import {ref} from "vue";
 import HeaderControlsButtons from '@/components/header/HeaderControlsButtons.vue'
 import PlanetComponent from "@/components/planets/PlanetComponent.vue";
 
 const isPlanetVisible = ref(false)
-
-
-// function mousedown(mdEvent: MouseEvent) {
-//     window.addEventListener('mousemove', mousemove)
-//     window.addEventListener('mouseup', mouseup)
-//     const currX = mdEvent.clientX
-//     const containerForResize = document.querySelector('.planet') as HTMLElement
-//     const blockWidth = containerForResize.clientWidth
-//
-//     function mousemove(mmEvent: MouseEvent) {
-//         const transition = currX - mmEvent.clientX
-//         if(blockWidth - transition >= 320){
-//             containerForResize.style.width = blockWidth - transition + 'px'
-//         }
-//     }
-//     function mouseup(){
-//         window.removeEventListener('mousemove', mousemove)
-//     }
-// }
-
-// watch(isPlanetVisible, () => {
-//     nextTick(() => {
-//         const resizer = document.querySelector('.planet_resize') as HTMLElement
-//         resizer.addEventListener('mousedown', mousedown)
-//     })
-// })
 
 
 </script>

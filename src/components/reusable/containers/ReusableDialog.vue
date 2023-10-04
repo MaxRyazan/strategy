@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import {nextTick, onMounted} from "vue";
+import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 
 const props = defineProps<{
     visible: boolean
     header?: string
+}>()
+defineEmits<{
+    (e:'closeDialog'):void
 }>()
 onMounted(() => {
     nextTick(() => {
@@ -34,6 +38,7 @@ function mousedown(mdEvent: MouseEvent) {
 
 <template>
     <Dialog :header="props.header ?? ''" class="for_resize" v-model:visible="props.visible" :closable="false" :blockScroll="true" draggable style="position: relative">
+        <reusable-button close_btn @push="$emit('closeDialog')"/>
         <slot />
         <div class="planet_resize"></div>
     </Dialog>
