@@ -1,6 +1,6 @@
 <template>
-    <Dialog :show-header="false" v-model:visible="props.isPlanetVisible"
-            style="width:98%; min-width: 310px; max-width: 1800px">
+    <Dialog :closable="false" blockScroll draggable header="Планета" v-model:visible="props.isPlanetVisible"
+            style="width:98%; min-width: 310px; max-width: 1800px; position: relative">
         <div class="planet_wrapper">
             <div class="left">
                 <div class="left__img">
@@ -42,17 +42,21 @@
             </div>
             <div class="right"></div>
         </div>
+        <div class="planet_resize"></div>
     </Dialog>
 </template>
 
 <script setup lang="ts">
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
-import {defineProps, ref} from 'vue'
+import {ref} from 'vue'
 const props = defineProps<{
     isPlanetVisible: boolean
 }>()
-
+defineEmits<{
+    (e: 'close'):void
+}>()
 const someValue = ref(222)
+
 </script>
 <style lang="scss" scoped>
 .planet_wrapper {
@@ -62,6 +66,14 @@ const someValue = ref(222)
   padding: 3px;
   display: flex;
   gap: 2px;
+}
+.planet_resize{
+  cursor: col-resize;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  border: 1px solid red;
 }
 
 .left {
