@@ -14,7 +14,6 @@ defineEmits<{
 }>()
 
 const adaptive = () => {
-    console.log('111111')
     const containerForResize: HTMLElement = document.querySelector('.for_resize')
     currentWidth.value = containerForResize.clientWidth
     if(currentWidth.value >= 1600) fontSize.value = 16
