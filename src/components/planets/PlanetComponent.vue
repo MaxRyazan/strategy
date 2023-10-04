@@ -1,5 +1,5 @@
 <template>
-    <Dialog :closable="false" blockScroll draggable header="Планета" v-model:visible="props.isPlanetVisible"
+    <Dialog :closable="false" :blockScroll="true" draggable header="Планета" v-model:visible="props.isPlanetVisible"
             style="width:98%; min-width: 310px; max-width: 1800px; position: relative">
         <div class="planet_wrapper">
             <div class="left">
@@ -73,7 +73,7 @@ const someValue = ref(222)
   right: 0;
   top: 0;
   height: 100%;
-  border: 1px solid red;
+  width: 5px;
 }
 
 .left {

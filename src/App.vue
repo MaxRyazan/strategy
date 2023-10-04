@@ -15,7 +15,9 @@ function mousedown(mdEvent: MouseEvent) {
 
     function mousemove(mmEvent: MouseEvent) {
         const transition = currX - mmEvent.clientX
-        containerForResize.style.width = blockWidth - transition + 'px'
+        if(blockWidth - transition >= 320){
+            containerForResize.style.width = blockWidth - transition + 'px'
+        }
     }
     function mouseup(){
         window.removeEventListener('mousemove', mousemove)
@@ -35,7 +37,7 @@ watch(isPlanetVisible, () => {
 <template>
     <div class="main_wrapper">
         <header-controls-buttons @openPlanet="isPlanetVisible=!isPlanetVisible"/>
-        <planet-component @close="isPlanetVisible=false" class="planet" :is-planet-visible="isPlanetVisible"
+        <planet-component class="planet" @close="isPlanetVisible=false" :is-planet-visible="isPlanetVisible"
                           v-if="isPlanetVisible"/>
     </div>
 </template>
