@@ -77,7 +77,8 @@ const someValue = ref(222)
 .left {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 35%;
+  max-width: 350px;
   padding: 5px 0;
   border-right: 2px solid white;
 }

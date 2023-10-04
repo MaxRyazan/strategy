@@ -14,12 +14,16 @@ defineEmits<{
 }>()
 
 const adaptive = () => {
+    console.log('111111')
+    const containerForResize: HTMLElement = document.querySelector('.for_resize')
+    currentWidth.value = containerForResize.clientWidth
     if(currentWidth.value >= 1600) fontSize.value = 16
     if(currentWidth.value < 1600) fontSize.value = 14
     if(currentWidth.value >= 1024 && currentWidth.value < 1600) fontSize.value = 14
     if(currentWidth.value < 1024) fontSize.value = 12
     if(currentWidth.value >= 800 && currentWidth.value < 1024) fontSize.value = 12
     if(currentWidth.value < 800) fontSize.value = 10
+    containerForResize.style.fontSize = fontSize.value + 'px'
 }
 
 watch(currentWidth, () => {
@@ -28,12 +32,10 @@ watch(currentWidth, () => {
 
 onMounted(() => {
     nextTick(() => {
+        window.addEventListener('resize', adaptive)
         const resizer: HTMLElement = document.querySelector('.planet_resize') as HTMLElement
-        const container: HTMLElement = document.querySelector('.for_resize')
         resizer.addEventListener('mousedown', mousedown)
-        currentWidth.value = container.clientWidth
         adaptive()
-        container.style.fontSize = fontSize.value + 'px'
     })
 })
 
@@ -47,9 +49,9 @@ function mousedown(mdEvent: MouseEvent) {
     function mousemove(mmEvent: MouseEvent) {
         const transition = currX - mmEvent.clientX
         currentWidth.value = blockWidth - transition
-        if(blockWidth - transition >= 320){
+        if(blockWidth - transition >= 640){
             containerForResize.style.width = blockWidth - transition + 'px'
-            containerForResize.style.fontSize = fontSize.value + 'px'
+            adaptive()
         }
     }
     function mouseup(){
