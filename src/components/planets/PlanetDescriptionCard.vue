@@ -9,9 +9,8 @@
 </template>
 <script setup lang="ts">
 import ReusableTextForDescription from '@/components/reusable/text/ReusableTextForDescription.vue'
-import {defineProps} from 'vue'
 const props = defineProps<{
-    variableValue: number
+    variableValue: number | string
     text: string
     icon: string
 }>()

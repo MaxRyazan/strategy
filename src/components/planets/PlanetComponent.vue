@@ -7,13 +7,16 @@
                 </div>
                 <hr style="margin: 8px 0"/>
                 <div class="left__info">
-                    <planet-description-card icon="lightning.png" :variableValue="someValue" text="Название планеты" />
+                    <planet-description-card icon="lightning.png" :variableValue="planetStore.selectedPlanet.name" text="Название планеты" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Координаты" />
-                    <planet-description-card icon="lightning.png" :variableValue="someValue" text="Площадь" />
+                    <planet-description-card icon="lightning.png" :variableValue="planetStore.selectedPlanet.points" text="Площадки" />
+                    <planet-description-card icon="lightning.png" :variableValue="someValue" text="Пресная вода" />
+                </div>
+                <hr style="margin: 8px 0"/>
+                <div class="left__info">
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Текущее население" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Максимум населения" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Электричество" />
-                    <planet-description-card icon="lightning.png" :variableValue="someValue" text="Пресная вода" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Производство еды" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Свободное место на складе" />
                 </div>
@@ -22,7 +25,7 @@
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Научный фактор" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Банковский население" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Прирост населения" />
-                    <planet-description-card icon="lightning.png" :variableValue="someValue" text="Увеличение произвводства еды" />
+                    <planet-description-card icon="lightning.png" :variableValue="someValue" text="Увеличение производства еды" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Ускорение производства модулей" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Ускорение добычи и переработки" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Ускорение постройки кораблей" />
@@ -48,12 +51,15 @@
 import {ref} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
+import {usePlanetStore} from "@/pinia/planetStore.ts";
 const props = defineProps<{
     isPlanetVisible: boolean
 }>()
 defineEmits<{
     (e: 'close'):void
 }>()
+
+const planetStore = usePlanetStore()
 const someValue = ref(222)
 
 </script>
