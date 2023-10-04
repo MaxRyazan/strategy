@@ -7,7 +7,9 @@ import {Planet} from "@/typescript/classes/Planet.ts";
 onMounted(() => {
     const playerStore = usePlayerStore()
     const planet = new Planet(1, 'Earth', 300)
-    playerStore.player = new Player(1, 'shooter', {homePlanet: planet, colonies: []})
+    const planet2 = new Planet(2, 'Mars', 400)
+    const planet3 = new Planet(3, 'Venus', 200)
+    playerStore.player = new Player(1, 'shooter', {homePlanet: planet, colonies: [planet2, planet3]})
 })
 </script>
 
