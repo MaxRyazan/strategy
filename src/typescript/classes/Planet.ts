@@ -1,6 +1,3 @@
 export class Planet {
-    id: number
-    name: string = `${id}A_${id*12}`
-    points: number
-
+    constructor(public id: number, public name: string = `${id}A_${id*12}`, public points: number) {}
 }
