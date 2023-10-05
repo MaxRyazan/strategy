@@ -146,7 +146,7 @@ function normalizeTime(time: number){
         minutes = Math.floor(seconds / 60)
         seconds = Math.floor(seconds - minutes * 60)
     }
-    timeToComplete.value = minutes + ':' + ( seconds<10 ? '0'+seconds : seconds)
+    timeToComplete.value = (minutes? minutes : 0) + ':' + ( seconds<10 ? '0'+seconds : seconds)
     return timeToComplete.value
 }
 
