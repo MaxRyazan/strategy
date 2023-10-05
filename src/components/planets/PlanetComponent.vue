@@ -56,6 +56,14 @@
                             <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>
                         </div>
                     </div>
+                    <div class="in_construct_container" :class="{'odd': idx%2===0}" v-for="(item, idx) in planetStore.selectedPlanet.buildingsInDestruct" :key="item.willReadyAt">
+                        <div>{{item.building.name}}</div>
+                        <div>{{item.building.count}}</div>
+                        <div style="position: relative">
+                            <div style="padding-right: 25px">{{item.willReadyAt}}</div>
+                            <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>
+                        </div>
+                    </div>
                 </div>
                 <div class="buildings">
                     <div class="buildings_nav">
@@ -78,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, shallowRef} from 'vue'
+import {ref, shallowRef} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
@@ -89,8 +97,8 @@ import EnergyBuildings from "@/components/planets/EnergyBuildings.vue";
 import ManufacturerBuildings from "@/components/planets/ManufacturerBuildings.vue";
 import SpecialBuildings from "@/components/planets/SpecialBuildings.vue";
 import ScienceBuildings from "@/components/planets/ScienceBuildings.vue";
-import {BuildingsInConstruct} from "@/typescript/types.ts";
 import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
+import {BuildingsInConstruct} from "@/typescript/types.ts";
 
 
 const props = defineProps<{
@@ -124,7 +132,7 @@ function showCategory(category: BuildingCategory){
 }
 
 function cancelBuildingConstruct(building: BuildingInterface){
-    planetStore.selectedPlanet.buildingsInConstruct = planetStore.selectedPlanet.buildingsInConstruct.filter(item => item.building.id !== building.id)
+    planetStore.selectedPlanet.buildingsInConstruct = planetStore.selectedPlanet.buildingsInConstruct.filter((item: BuildingsInConstruct) => item.building.id !== building.id)
 }
 </script>
 

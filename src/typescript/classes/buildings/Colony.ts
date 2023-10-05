@@ -3,7 +3,7 @@ import {Buildings} from "@/typescript/enums.ts";
 import {CREATION_TIME} from "@/constants.ts";
 
 export class Colony implements BuildingInterface {
-    constructor(public count = 1) {
+    constructor(public count = 0) {
         this.id = 1;
         this.name = Buildings.COLONY
         this.timeOfCreation = CREATION_TIME * 1.01

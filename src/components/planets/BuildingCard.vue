@@ -20,17 +20,24 @@ onMounted(() => {
 })
 
 function addBuildingToBuildQueue(){
-    const exists = planetStore.selectedPlanet.buildingsInConstruct.find((item:BuildingsInConstruct) => item.building.id === props.building.id)
-    if(!exists) selectedPlanet.buildingsInConstruct.push({building: props.building, willReadyAt: Date.now() + props.building.timeOfCreation})
-    else exists.building.count += 1
+    const alreadyCreated = selectedPlanet.buildings.find((item:BuildingInterface) => item.id === props.building.id)
+    const alreadyInProgress = planetStore.selectedPlanet.buildingsInConstruct.find((item:BuildingsInConstruct) => item.building.id === props.building.id)
+    if((alreadyInProgress || alreadyCreated) && props.building.name === Buildings.COLONY) return
+    if(!alreadyInProgress) {
+        const newBuilding = Object.assign({}, props.building)
+        newBuilding.count += 1
+        selectedPlanet.buildingsInConstruct.push({
+            building: newBuilding,
+            willReadyAt: Date.now() + props.building.timeOfCreation
+        })
+    }
+    else alreadyInProgress.building.count += 1
 }
 function addBuildingToDestroyQueue(){
-    selectedPlanet.buildingsInDestruct.push({building: props.building, willReadyAt: (Date.now() + props.building.timeOfCreation) / 2})
+    if(props.building.count > 0){
+        selectedPlanet.buildingsInDestruct.push({building: props.building, willReadyAt: (Date.now() + props.building.timeOfCreation) / 2})
+    }
 }
-
-// watch(selectedPlanet, () => {
-//     existingBuilding.value = selectedPlanet.buildings.find((building: BuildingInterface) => building.id === props.building.id)
-// })
 
 </script>
 
