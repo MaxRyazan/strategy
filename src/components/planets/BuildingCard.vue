@@ -6,6 +6,7 @@ import {usePlanetStore} from "@/pinia/planetStore.ts";
 import {onMounted, Ref, ref} from "vue";
 import {Buildings} from "@/typescript/enums.ts";
 import {Planet} from "@/typescript/classes/Planet.ts";
+import {BuildingsInConstruct} from "@/typescript/types.ts";
 
 const planetStore = usePlanetStore()
 const selectedPlanet: Planet = planetStore.selectedPlanet
@@ -19,7 +20,9 @@ onMounted(() => {
 })
 
 function addBuildingToBuildQueue(){
-    selectedPlanet.buildingsInConstruct.push({building: props.building, willReadyAt: Date.now() + props.building.timeOfCreation})
+    const exists = planetStore.selectedPlanet.buildingsInConstruct.find((item:BuildingsInConstruct) => item.building.id === props.building.id)
+    if(!exists) selectedPlanet.buildingsInConstruct.push({building: props.building, willReadyAt: Date.now() + props.building.timeOfCreation})
+    else exists.building.count += 1
 }
 function addBuildingToDestroyQueue(){
     selectedPlanet.buildingsInDestruct.push({building: props.building, willReadyAt: (Date.now() + props.building.timeOfCreation) / 2})
@@ -71,12 +74,10 @@ function addBuildingToDestroyQueue(){
   padding: 0 5px;
   align-items: center;
   height: 20%;
-  border: 1px solid red;
   cursor: default;
 }
 .card_image{
   height: 60%;
-  border: 1px solid red;
 }
 
 .card_button {

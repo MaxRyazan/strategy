@@ -18,7 +18,6 @@ import BuildingCard from '@/components/planets/BuildingCard.vue';
   display: flex;
   flex-wrap: wrap;
   align-items: start;
-  border: 1px solid blue;
   gap: 2px;
 }
 </style>

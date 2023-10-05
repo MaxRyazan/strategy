@@ -48,7 +48,14 @@
                     <reusable-button>Склад</reusable-button>
                 </div>
                 <div class="in_build">
-                    <div v-for="item in planetStore.selectedPlanet.buildingsInConstruct" :key="item.willReadyAt">{{item.building.name}}</div>
+                    <div class="in_construct_container" :class="{'odd': idx%2===0}" v-for="(item, idx) in planetStore.selectedPlanet.buildingsInConstruct" :key="item.willReadyAt">
+                        <div>{{item.building.name}}</div>
+                        <div>{{item.building.count}}</div>
+                        <div style="position: relative">
+                            <div style="padding-right: 25px">{{item.willReadyAt}}</div>
+                            <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>
+                        </div>
+                    </div>
                 </div>
                 <div class="buildings">
                     <div class="buildings_nav">
@@ -71,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, shallowRef} from 'vue'
+import {computed, ref, shallowRef} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
@@ -82,6 +89,8 @@ import EnergyBuildings from "@/components/planets/EnergyBuildings.vue";
 import ManufacturerBuildings from "@/components/planets/ManufacturerBuildings.vue";
 import SpecialBuildings from "@/components/planets/SpecialBuildings.vue";
 import ScienceBuildings from "@/components/planets/ScienceBuildings.vue";
+import {BuildingsInConstruct} from "@/typescript/types.ts";
+import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
 
 
 const props = defineProps<{
@@ -95,6 +104,8 @@ const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
 const currentComponent = shallowRef(AdministrativeBuildings)
 const planetStore = usePlanetStore()
 const someValue = ref(222)
+
+
 
 function showCategory(category: BuildingCategory){
     currentBuildingTab.value = category
@@ -111,9 +122,20 @@ function showCategory(category: BuildingCategory){
             break
     }
 }
+
+function cancelBuildingConstruct(building: BuildingInterface){
+    planetStore.selectedPlanet.buildingsInConstruct = planetStore.selectedPlanet.buildingsInConstruct.filter(item => item.building.id !== building.id)
+}
 </script>
 
 <style lang="scss" scoped>
+.in_construct_container{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 20px;
+  cursor: default;
+  background-color: gray;
+}
 .activeButton{
   color: darkorange;
 }
@@ -122,7 +144,6 @@ function showCategory(category: BuildingCategory){
   display: flex;
   gap: 2px;
   height: 24px;
-  border: 1px solid red;
   & button {
     height: 100%;
     width: 100%;
@@ -134,24 +155,24 @@ function showCategory(category: BuildingCategory){
 }
 .in_build{
   width: 100%;
-  border: 1px solid red;
   height: 30%;
   color: white;
 }
 .buildings{
   width: 100%;
-  border: 1px solid red;
   height: calc(70% - 28px);
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
 }
 .controls{
+  display: flex;
+  gap: 2px;
   width: 100%;
   height: 26px;
-  border: 1px solid red;
   & button {
     height: 100%;
+    width: 100%;
   }
 }
 .planet_wrapper {
@@ -204,5 +225,8 @@ function showCategory(category: BuildingCategory){
 .left__balance{
   display: flex;
   flex-direction: column;
+}
+.odd{
+  background-color: lightblue;
 }
 </style>
