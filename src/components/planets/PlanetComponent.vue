@@ -61,6 +61,7 @@
                         <reusable-button @push="showCategory(BuildingCategory.SPECIAL)"
                                          :class="{'activeButton': currentBuildingTab===BuildingCategory.SPECIAL}">Специальные</reusable-button>
                     </div>
+                    <component :is="currentComponent" />
                 </div>
             </div>
         </div>
@@ -68,12 +69,19 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 import {BuildingCategory} from "@/typescript/enums.ts";
+import AdministrativeBuildings from "@/components/planets/AdministrativeBuildings.vue";
+import EnergyBuildings from "@/components/planets/EnergyBuildings.vue";
+import ManufacturerBuildings from "@/components/planets/ManufacturerBuildings.vue";
+import SpecialBuildings from "@/components/planets/SpecialBuildings.vue";
+import ScienceBuildings from "@/components/planets/ScienceBuildings.vue";
+
+
 const props = defineProps<{
     isPlanetVisible: boolean
 }>()
@@ -81,10 +89,20 @@ defineEmits<{
     (e: 'close'):void
 }>()
 
+
 const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
 const planetStore = usePlanetStore()
 const someValue = ref(222)
 
+const currentComponent = computed(() => {
+    switch (currentBuildingTab.value){
+        case BuildingCategory.ADMINISTRATIVE : return AdministrativeBuildings
+        case BuildingCategory.MANUFACTURER : return ManufacturerBuildings
+        case BuildingCategory.ENERGETIC : return EnergyBuildings
+        case BuildingCategory.SCIENCES : return ScienceBuildings
+        case BuildingCategory.SPECIAL : return SpecialBuildings
+    }
+})
 
 function showCategory(category: BuildingCategory){
     currentBuildingTab.value = category
