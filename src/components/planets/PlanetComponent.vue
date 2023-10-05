@@ -52,7 +52,7 @@
                         <div>{{item.building.name}}</div>
                         <div>{{item.building.count}}</div>
                         <div style="position: relative">
-                            <div style="padding-right: 25px">{{item.willReadyAt}}</div>
+                            <div style="padding-right: 25px">{{normalizeTime(item.willReadyAt)}}</div>
                             <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, shallowRef} from 'vue'
+import {ref, shallowRef, watch} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
@@ -112,6 +112,8 @@ const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
 const currentComponent = shallowRef(AdministrativeBuildings)
 const planetStore = usePlanetStore()
 const someValue = ref(222)
+const interval = ref()
+const timeToComplete = ref('')
 
 
 
@@ -134,6 +136,27 @@ function showCategory(category: BuildingCategory){
 function cancelBuildingConstruct(building: BuildingInterface){
     planetStore.selectedPlanet.buildingsInConstruct = planetStore.selectedPlanet.buildingsInConstruct.filter((item: BuildingsInConstruct) => item.building.id !== building.id)
 }
+
+function normalizeTime(time: number){
+    let minutes;
+    let seconds;
+    const subtract = time - Date.now()
+    seconds = Math.round(subtract / 1000)
+    if(seconds > 60) {
+        minutes = Math.floor(seconds / 60)
+        seconds = Math.floor(seconds - minutes * 60)
+    }
+    timeToComplete.value = minutes + ':' + ( seconds<10 ? '0'+seconds : seconds)
+    return timeToComplete.value
+}
+
+watch(planetStore.selectedPlanet.buildingsInConstruct, () => {
+    if(planetStore.selectedPlanet.buildingsInConstruct.length){
+        interval.value = setInterval(normalizeTime, 1000)
+    } else {
+        clearInterval(interval.value)
+    }
+}, {immediate: true})
 </script>
 
 <style lang="scss" scoped>
