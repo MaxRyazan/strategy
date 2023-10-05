@@ -1,1 +1,1 @@
-export const CREATION_TIME: number = 600000;
+export const CREATION_TIME: number = 5000;

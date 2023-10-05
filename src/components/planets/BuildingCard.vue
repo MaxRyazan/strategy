@@ -3,7 +3,7 @@ import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/Bui
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 
 import {usePlanetStore} from "@/pinia/planetStore.ts";
-import {onMounted, Ref, ref} from "vue";
+import {onMounted, Ref, ref, watch} from "vue";
 import {Buildings} from "@/typescript/enums.ts";
 import {Planet} from "@/typescript/classes/Planet.ts";
 import {BuildingsInConstruct} from "@/typescript/types.ts";

@@ -48,22 +48,17 @@
                     <reusable-button>Склад</reusable-button>
                 </div>
                 <div class="in_build">
-                    <div class="in_construct_container" :class="{'odd': idx%2===0}" v-for="(item, idx) in planetStore.selectedPlanet.buildingsInConstruct" :key="item.willReadyAt">
-                        <div>{{item.building.name}}</div>
-                        <div>{{item.building.count}}</div>
-                        <div style="position: relative">
-                            <div style="padding-right: 25px">{{normalizeTime(item.willReadyAt)}}</div>
-                            <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>
-                        </div>
+                    <div class="in_construct_container">
+                        <construct-container v-for="(item, idx) in planetStore.selectedPlanet.buildingsInConstruct" :key="item.willReadyAt"  :item="item"/>
                     </div>
-                    <div class="in_construct_container" :class="{'odd': idx%2===0}" v-for="(item, idx) in planetStore.selectedPlanet.buildingsInDestruct" :key="item.willReadyAt">
-                        <div>{{item.building.name}}</div>
-                        <div>{{item.building.count}}</div>
-                        <div style="position: relative">
-                            <div style="padding-right: 25px">{{item.willReadyAt}}</div>
-                            <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>
-                        </div>
-                    </div>
+<!--                    <div class="in_construct_container" :class="{'odd': idx%2===0}" v-for="(item, idx) in planetStore.selectedPlanet.buildingsInDestruct" :key="item.willReadyAt">-->
+<!--                        <div>{{item.building.name}}</div>-->
+<!--                        <div>{{item.building.count}}</div>-->
+<!--                        <div style="position: relative">-->
+<!--                            <div style="padding-right: 25px">{{item.willReadyAt}}</div>-->
+<!--                            <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
                 <div class="buildings">
                     <div class="buildings_nav">
@@ -97,8 +92,7 @@ import EnergyBuildings from "@/components/planets/EnergyBuildings.vue";
 import ManufacturerBuildings from "@/components/planets/ManufacturerBuildings.vue";
 import SpecialBuildings from "@/components/planets/SpecialBuildings.vue";
 import ScienceBuildings from "@/components/planets/ScienceBuildings.vue";
-import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
-import {BuildingsInConstruct} from "@/typescript/types.ts";
+import ConstructContainer from "@/components/planets/ConstructContainer.vue";
 
 
 const props = defineProps<{
@@ -112,8 +106,6 @@ const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
 const currentComponent = shallowRef(AdministrativeBuildings)
 const planetStore = usePlanetStore()
 const someValue = ref(222)
-const interval = ref()
-const timeToComplete = ref('')
 
 
 
@@ -133,30 +125,6 @@ function showCategory(category: BuildingCategory){
     }
 }
 
-function cancelBuildingConstruct(building: BuildingInterface){
-    planetStore.selectedPlanet.buildingsInConstruct = planetStore.selectedPlanet.buildingsInConstruct.filter((item: BuildingsInConstruct) => item.building.id !== building.id)
-}
-
-function normalizeTime(time: number){
-    let minutes;
-    let seconds;
-    const subtract = time - Date.now()
-    seconds = Math.round(subtract / 1000)
-    if(seconds > 60) {
-        minutes = Math.floor(seconds / 60)
-        seconds = Math.floor(seconds - minutes * 60)
-    }
-    timeToComplete.value = (minutes? minutes : 0) + ':' + ( seconds<10 ? '0'+seconds : seconds)
-    return timeToComplete.value
-}
-
-watch(planetStore.selectedPlanet.buildingsInConstruct, () => {
-    if(planetStore.selectedPlanet.buildingsInConstruct.length){
-        interval.value = setInterval(normalizeTime, 1000)
-    } else {
-        clearInterval(interval.value)
-    }
-}, {immediate: true})
 </script>
 
 <style lang="scss" scoped>
