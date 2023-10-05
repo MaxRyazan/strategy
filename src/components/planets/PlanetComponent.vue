@@ -42,7 +42,16 @@
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Баланс еды" />
                 </div>
             </div>
-            <div class="right"></div>
+            <div class="right">
+                <div class="controls">
+                    <reusable-button>Строительство</reusable-button>
+                    <reusable-button>Склад</reusable-button>
+                </div>
+                <div class="in_build"></div>
+                <div class="buildings">
+
+                </div>
+            </div>
         </div>
     </reusable-dialog>
 </template>
@@ -52,6 +61,7 @@ import {ref} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
+import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 const props = defineProps<{
     isPlanetVisible: boolean
 }>()
@@ -63,7 +73,33 @@ const planetStore = usePlanetStore()
 const someValue = ref(222)
 
 </script>
+
 <style lang="scss" scoped>
+.right{
+  position: relative;
+  width: 100%;
+}
+.in_build{
+  width: 100%;
+  border: 1px solid red;
+  height: 30%;
+}
+.buildings{
+  width: 100%;
+  border: 1px solid red;
+  height: calc(70% - 28px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+.controls{
+  width: 100%;
+  height: 26px;
+  border: 1px solid red;
+  & button {
+    height: 100%;
+  }
+}
 .planet_wrapper {
   width: 100%;
   color: white;

@@ -21,10 +21,10 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@/*": [
-        "src/*"
+        "./src/*"
       ],
       "@reusable" : [
-        "src/components/reusable/*"
+        "./src/components/reusable/*"
       ]
     }
   },
