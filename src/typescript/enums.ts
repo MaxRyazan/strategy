@@ -5,3 +5,8 @@ export enum BuildingCategory {
     SCIENCES = 'SCIENCES',
     SPECIAL = 'SPECIAL',
 }
+
+export enum Buildings {
+    COLONY = 'Колония',
+    CONTROL_CENTER = 'Центр управления',
+}

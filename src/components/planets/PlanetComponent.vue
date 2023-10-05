@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref} from 'vue'
+import {ref, shallowRef} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
@@ -90,7 +90,7 @@ defineEmits<{
 }>()
 
 const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
-const currentComponent = ref(AdministrativeBuildings)
+const currentComponent = shallowRef(AdministrativeBuildings)
 const planetStore = usePlanetStore()
 const someValue = ref(222)
 
