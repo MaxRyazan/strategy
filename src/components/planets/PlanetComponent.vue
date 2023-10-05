@@ -49,7 +49,18 @@
                 </div>
                 <div class="in_build"></div>
                 <div class="buildings">
-
+                    <div class="buildings_nav">
+                        <reusable-button @push="showCategory(BuildingCategory.ADMINISTRATIVE)"
+                                         :class="{'activeButton': currentBuildingTab===BuildingCategory.ADMINISTRATIVE}">Административные</reusable-button>
+                        <reusable-button @push="showCategory(BuildingCategory.MANUFACTURER)"
+                                         :class="{'activeButton': currentBuildingTab===BuildingCategory.MANUFACTURER}">Производственные</reusable-button>
+                        <reusable-button @push="showCategory(BuildingCategory.ENERGETIC)"
+                                         :class="{'activeButton': currentBuildingTab===BuildingCategory.ENERGETIC}">Энергетические</reusable-button>
+                        <reusable-button @push="showCategory(BuildingCategory.SCIENCES)"
+                                         :class="{'activeButton': currentBuildingTab===BuildingCategory.SCIENCES}">Научные</reusable-button>
+                        <reusable-button @push="showCategory(BuildingCategory.SPECIAL)"
+                                         :class="{'activeButton': currentBuildingTab===BuildingCategory.SPECIAL}">Специальные</reusable-button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,6 +73,7 @@ import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vu
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
+import {BuildingCategory} from "@/typescript/enums.ts";
 const props = defineProps<{
     isPlanetVisible: boolean
 }>()
@@ -69,12 +81,31 @@ defineEmits<{
     (e: 'close'):void
 }>()
 
+const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
 const planetStore = usePlanetStore()
 const someValue = ref(222)
 
+
+function showCategory(category: BuildingCategory){
+    currentBuildingTab.value = category
+}
 </script>
 
 <style lang="scss" scoped>
+.activeButton{
+  color: darkorange;
+}
+.buildings_nav{
+  width: 100%;
+  display: flex;
+  gap: 2px;
+  height: 24px;
+  border: 1px solid red;
+  & button {
+    height: 100%;
+    width: 100%;
+  }
+}
 .right{
   position: relative;
   width: 100%;
