@@ -47,7 +47,9 @@
                     <reusable-button>Строительство</reusable-button>
                     <reusable-button>Склад</reusable-button>
                 </div>
-                <div class="in_build"></div>
+                <div class="in_build">
+                    <div v-for="item in planetStore.selectedPlanet.buildingsInConstruct" :key="item.willReadyAt">{{item.building.name}}</div>
+                </div>
                 <div class="buildings">
                     <div class="buildings_nav">
                         <reusable-button @push="showCategory(BuildingCategory.ADMINISTRATIVE)"
@@ -134,6 +136,7 @@ function showCategory(category: BuildingCategory){
   width: 100%;
   border: 1px solid red;
   height: 30%;
+  color: white;
 }
 .buildings{
   width: 100%;

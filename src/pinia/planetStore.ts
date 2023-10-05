@@ -1,8 +1,12 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
+import {Planet} from "@/typescript/classes/Planet.ts";
 
-export const usePlanetStore:any = defineStore('planeStore', {
-    state: () => ({
-        selectedPlanet: ref(null)
+interface StoreTypes {
+    selectedPlanet: Planet | null
+}
+
+export const usePlanetStore: any = defineStore('planeStore', {
+    state: (): StoreTypes => ({
+        selectedPlanet: null
     })
 })

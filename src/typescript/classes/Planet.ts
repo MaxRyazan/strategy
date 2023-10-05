@@ -7,8 +7,8 @@ export class Planet {
         public name: string = `${id}A_${id*12}`,
         public points: number,
         public buildings: BuildingInterface[],
-        public buildingsInConstruct: BuildingsInConstruct,
-        public buildingsInDestruct: BuildingsInConstruct
+        public buildingsInConstruct: BuildingsInConstruct[],
+        public buildingsInDestruct: BuildingsInConstruct[]
     )
     {}
 }

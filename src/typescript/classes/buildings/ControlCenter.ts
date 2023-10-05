@@ -2,5 +2,10 @@ import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/Bui
 import {Buildings} from "@/typescript/enums.ts";
 
 export class ControlCenter implements BuildingInterface {
-    constructor(public id: 2, public name: Buildings.CONTROL_CENTER, public count: 0) {}
+    readonly id: 2
+    readonly name: Buildings.CONTROL_CENTER
+    constructor(public count = 1) {
+        this.id = 2
+        this.name = Buildings.CONTROL_CENTER
+    }
 }
