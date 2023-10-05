@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import { ref} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
@@ -89,23 +89,25 @@ defineEmits<{
     (e: 'close'):void
 }>()
 
-
 const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
+const currentComponent = ref(AdministrativeBuildings)
 const planetStore = usePlanetStore()
 const someValue = ref(222)
 
-const currentComponent = computed(() => {
-    switch (currentBuildingTab.value){
-        case BuildingCategory.ADMINISTRATIVE : return AdministrativeBuildings
-        case BuildingCategory.MANUFACTURER : return ManufacturerBuildings
-        case BuildingCategory.ENERGETIC : return EnergyBuildings
-        case BuildingCategory.SCIENCES : return ScienceBuildings
-        case BuildingCategory.SPECIAL : return SpecialBuildings
-    }
-})
-
 function showCategory(category: BuildingCategory){
     currentBuildingTab.value = category
+    switch (currentBuildingTab.value){
+        case BuildingCategory.ADMINISTRATIVE : currentComponent.value = AdministrativeBuildings
+            break
+        case BuildingCategory.MANUFACTURER : currentComponent.value = ManufacturerBuildings
+            break
+        case BuildingCategory.ENERGETIC : currentComponent.value = EnergyBuildings
+            break
+        case BuildingCategory.SCIENCES : currentComponent.value = ScienceBuildings
+            break
+        case BuildingCategory.SPECIAL : currentComponent.value = SpecialBuildings
+            break
+    }
 }
 </script>
 
