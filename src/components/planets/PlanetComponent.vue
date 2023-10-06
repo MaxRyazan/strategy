@@ -48,9 +48,8 @@
                     <reusable-button>Склад</reusable-button>
                 </div>
                 <div class="in_build">
-                    <div class="in_construct_container">
-                        <construct-container v-for="(item, idx) in planetStore.selectedPlanet.buildingsInConstruct" :key="item.willReadyAt"  :item="item"/>
-                    </div>
+                        <construct-container v-for="item in planetStore.selectedPlanet.buildingsInConstruct" :key="item.willReadyAt"  :item="item"/>
+
 <!--                    <div class="in_construct_container" :class="{'odd': idx%2===0}" v-for="(item, idx) in planetStore.selectedPlanet.buildingsInDestruct" :key="item.willReadyAt">-->
 <!--                        <div>{{item.building.name}}</div>-->
 <!--                        <div>{{item.building.count}}</div>-->
@@ -81,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, shallowRef, watch} from 'vue'
+import {ref, shallowRef} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
@@ -128,13 +127,6 @@ function showCategory(category: BuildingCategory){
 </script>
 
 <style lang="scss" scoped>
-.in_construct_container{
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 20px;
-  cursor: default;
-  background-color: gray;
-}
 .activeButton{
   color: darkorange;
 }

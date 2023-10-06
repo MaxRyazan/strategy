@@ -3,4 +3,5 @@ import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/Bui
 export interface BuildingsInConstruct {
     building: BuildingInterface,
     willReadyAt: number
+    forDestroy: boolean
 }

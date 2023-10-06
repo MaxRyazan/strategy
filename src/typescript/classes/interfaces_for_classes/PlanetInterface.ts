@@ -7,5 +7,4 @@ export interface PlanetInterface {
     points: number
     buildings: BuildingInterface[]
     buildingsInConstruct: BuildingsInConstruct[]
-    buildingsInDestruct: BuildingsInConstruct[]
 }

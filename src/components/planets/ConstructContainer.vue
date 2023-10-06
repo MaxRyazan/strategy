@@ -29,9 +29,12 @@ function normalizeTime(time: number){
             planetStore.selectedPlanet.buildingsInConstruct = planetStore.selectedPlanet.buildingsInConstruct.filter((item: BuildingsInConstruct) => item.building.id !== props.item.building.id)
             timeToComplete.value = 0
             const existing = planetStore.selectedPlanet.buildings.find((item: BuildingInterface) => item.id === props.item.building.id)
-            if(existing) existing.count += 1
-            else planetStore.selectedPlanet.buildings.push(props.item.building)
-
+            if(props.item.forDestroy){
+                if(existing) existing.count -= 1
+            } else {
+                if(existing) existing.count += 1
+                else planetStore.selectedPlanet.buildings.push(props.item.building)
+            }
         }
     }
 }
@@ -52,14 +55,22 @@ watch(planetStore.selectedPlanet.buildingsInConstruct, () => {
 </script>
 
 <template>
-    <div>{{item.building.name}}</div>
-    <div>{{item.building.count}}</div>
-    <div style="position: relative">
-        <div style="padding-right: 25px">{{timeToComplete}}</div>
-        <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>
+    <div class="container">
+        <div>{{item.building.name}}</div>
+        <div>{{item.building.count}}</div>
+        <div style="position: relative">
+            <div style="padding-right: 25px">{{timeToComplete}}</div>
+            <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>
+        </div>
     </div>
 </template>
 
 <style scoped lang="scss">
-
+.container {
+  display: flex;
+  justify-content: space-between;
+  cursor: default;
+  background-color: gray;
+  padding: 5px 20px;
+}
 </style>

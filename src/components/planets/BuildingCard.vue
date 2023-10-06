@@ -29,14 +29,18 @@ function addBuildingToBuildQueue(){
         newBuilding.count += 1
         selectedPlanet.buildingsInConstruct.push({
             building: newBuilding,
-            willReadyAt: Date.now() + props.building.timeOfCreation
+            willReadyAt: Date.now() + props.building.timeOfCreation,
+            forDestroy: false
         })
     }
     else alreadyInProgress.building.count += 1
 }
 function addBuildingToDestroyQueue(){
-    if(props.building.count > 0){
-        selectedPlanet.buildingsInDestruct.push({building: props.building, willReadyAt: (Date.now() + props.building.timeOfCreation) / 2})
+    const alreadyCreated: BuildingInterface|undefined = selectedPlanet.buildings.find((item:BuildingInterface) => item.id === props.building.id)
+    if(alreadyCreated && alreadyCreated.count > 0){
+        const buildingForDestruct = props.building
+        buildingForDestruct.count = 1
+        selectedPlanet.buildingsInConstruct.push({building: buildingForDestruct, willReadyAt: (Date.now() + props.building.timeOfCreation / 1.5), forDestroy: true})
     }
 }
 
@@ -56,7 +60,7 @@ watch(planetStore.selectedPlanet.buildings, () => {
     <div class="card">
         <div class="card_header">
             <div class="card_name">{{ props.building.name }}</div>
-            <div class="card_count">{{ existingBuilding?.count ?? '' }}</div>
+            <div class="card_count">{{ existingBuilding?.count > 0 ? existingBuilding?.count : '' }}</div>
         </div>
         <div class="card_image">
 
