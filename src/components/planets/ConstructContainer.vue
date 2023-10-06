@@ -10,7 +10,7 @@ const props = defineProps<{
     item: BuildingsInConstruct
 }>()
 const planetStore = usePlanetStore()
-let interval;
+let interval: any;
 const timeToComplete = ref()
 
 function normalizeTime(time: number){
@@ -26,10 +26,12 @@ function normalizeTime(time: number){
     if(minutes === 0){
         if(seconds <= 0) {
             clearInterval(interval)
-            planetStore.selectedPlanet.buildings.push(props.item.building)
             planetStore.selectedPlanet.buildingsInConstruct = planetStore.selectedPlanet.buildingsInConstruct.filter((item: BuildingsInConstruct) => item.building.id !== props.item.building.id)
             timeToComplete.value = 0
-            planetStore.selectedPlanet.buildings.push(props.item.building)
+            const existing = planetStore.selectedPlanet.buildings.find((item: BuildingInterface) => item.id === props.item.building.id)
+            if(existing) existing.count += 1
+            else planetStore.selectedPlanet.buildings.push(props.item.building)
+
         }
     }
 }

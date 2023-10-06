@@ -3,7 +3,7 @@ import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/Bui
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 
 import {usePlanetStore} from "@/pinia/planetStore.ts";
-import {onMounted, Ref, ref, watch} from "vue";
+import { onMounted, Ref, ref, watch} from "vue";
 import {Buildings} from "@/typescript/enums.ts";
 import {Planet} from "@/typescript/classes/Planet.ts";
 import {BuildingsInConstruct} from "@/typescript/types.ts";
@@ -13,10 +13,11 @@ const selectedPlanet: Planet = planetStore.selectedPlanet
 const props = defineProps<{
     building: BuildingInterface
 }>()
-const existingBuilding: Ref<BuildingInterface|undefined> = ref() as Ref<BuildingInterface>
+const existingBuilding: Ref<BuildingInterface> = ref() as Ref<BuildingInterface>
 
 onMounted(() => {
-    existingBuilding.value = selectedPlanet.buildings.find((building: BuildingInterface) => building.id === props.building.id)
+    const exist: BuildingInterface|undefined = selectedPlanet.buildings.find((building: BuildingInterface) => building.id === props.building.id)
+    if(exist) existingBuilding.value = exist
 })
 
 function addBuildingToBuildQueue(){
@@ -38,6 +39,14 @@ function addBuildingToDestroyQueue(){
         selectedPlanet.buildingsInDestruct.push({building: props.building, willReadyAt: (Date.now() + props.building.timeOfCreation) / 2})
     }
 }
+
+
+watch(planetStore.selectedPlanet.buildings, () => {
+    const existing: BuildingInterface = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.building.id)
+    if(existingBuilding.value) existingBuilding.value.count = existing.count
+    existingBuilding.value =  existing
+})
+
 
 </script>
 
