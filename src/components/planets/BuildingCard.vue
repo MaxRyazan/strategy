@@ -40,11 +40,13 @@ function addBuildingToDestroyQueue(){
     }
 }
 
-
+/**
+ * Здесь происходит отрисовка текущего количества построенного здания, после того, как в таймере строительства кончается отсчет
+ */
 watch(planetStore.selectedPlanet.buildings, () => {
     const existing: BuildingInterface = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.building.id)
     if(existingBuilding.value) existingBuilding.value.count = existing.count
-    existingBuilding.value =  existing
+    existingBuilding.value = existing
 })
 
 
