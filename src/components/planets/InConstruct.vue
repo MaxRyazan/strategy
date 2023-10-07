@@ -2,6 +2,7 @@
 import {BuildingsInConstruct} from "@/typescript/types.ts";
 import {onMounted, ref, watch} from "vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
+import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
 
 const planetStore = usePlanetStore()
 const props = defineProps<{
@@ -13,7 +14,6 @@ const isComplete = ref(false)
 let interval: any;
 
 onMounted(() => {
-    console.log(planetStore.selectedPlanet.buildingsInConstruct)
     if(Date.now() > props.item.willReadyAt) {
         isComplete.value = true
         deleteFromQueue()
@@ -45,7 +45,9 @@ function deleteFromQueue(){
     planetStore.selectedPlanet.buildingsInConstruct = planetStore.selectedPlanet.buildingsInConstruct.filter((b:BuildingsInConstruct) => b.id !== props.item.id)
 }
 function addToPlanetBuildings(){
-    planetStore.selectedPlanet.buildings.push(props.item.building)
+    const exist = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.item.building.id)
+    if(!exist) planetStore.selectedPlanet.buildings.push(props.item.building)
+    else exist.count += 1
 }
 
 </script>
