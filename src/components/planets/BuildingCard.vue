@@ -4,6 +4,7 @@ import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
 import {Buildings} from "@/typescript/enums.ts";
 import {onMounted, Ref, ref, watch} from "vue";
+import {BuildingsInConstruct} from "@/typescript/types.ts";
 
 const planetStore = usePlanetStore()
 const isBuildingExistOnPlanet: Ref<boolean> = ref(false)
@@ -17,11 +18,26 @@ onMounted(() => {
     if(isBuildingExistOnPlanet.value) existingBuilding.value = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.building.id)
 })
 
+
+function checkThatBuildingsToDestroyCountMoreThanZero(){
+    const buildingToDestroy: BuildingInterface = props.building
+    const exists: BuildingInterface = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === buildingToDestroy.id)
+    const inQueue: BuildingInterface = planetStore.selectedPlanet.buildingsInConstruct.find((b:BuildingsInConstruct) => (b.building.id === buildingToDestroy.id) && b.forDestroy)
+    let count = 0
+    if(exists) count+=exists.count
+    if(inQueue) count+=inQueue.count
+    return count >= 1
+}
+
 function setToQueue(forDestroy: boolean){
     if(!existingBuilding.value && forDestroy){ return }
     if((!existingBuilding.value || existingBuilding.value?.count <= 0) && forDestroy) {
         return;
     }
+    if(forDestroy){
+        if(!checkThatBuildingsToDestroyCountMoreThanZero()) { return }
+    }
+
     const newBuilding: BuildingInterface = {
         id: props.building.id,
         name: props.building.name,
