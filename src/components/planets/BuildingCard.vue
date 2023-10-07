@@ -3,7 +3,7 @@ import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/Bui
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
 import {Buildings} from "@/typescript/enums.ts";
-import {onMounted, Ref, ref} from "vue";
+import {onMounted, Ref, ref, watch} from "vue";
 
 const planetStore = usePlanetStore()
 const isBuildingExistOnPlanet: Ref<boolean> = ref(false)
@@ -39,7 +39,13 @@ function setToQueue(forDestroy: boolean){
     planetStore.selectedPlanet.buildingsInConstruct.push(objectToConstruct)
 }
 
-
+/**
+ * Следим за изменением построенных зданий на планете.
+ */
+watch(planetStore.selectedPlanet.buildings, () => {
+    const exist = planetStore.selectedPlanet.buildings.find((b: BuildingInterface) => b.id === props.building.id)
+    if(exist) existingBuilding.value = exist
+})
 
 </script>
 
