@@ -22,14 +22,14 @@ onMounted(() => {
 })
 
 
-function checkThatBuildingsToDestroyCountMoreThanZero(){
+function checkThatBuildingsToDestroyCountMoreThanDeleted(){
     const buildingToDestroy: BuildingInterface = props.building
     const exists: BuildingInterface = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === buildingToDestroy.id)
     const inQueue: BuildingInterface = planetStore.selectedPlanet.buildingsInConstruct.find((b:BuildingsInConstruct) => (b.building.id === buildingToDestroy.id) && b.forDestroy)
     let count = 0
     if(exists) count+=exists.count
     if(inQueue) count+=inQueue.count
-    return count >= 1
+    return count >= buildingCountToDestruct.value
 }
 
 function setToQueue(forDestroy: boolean){
@@ -39,7 +39,7 @@ function setToQueue(forDestroy: boolean){
     }
     let newBuilding: BuildingInterface;
     if(forDestroy){
-        if(!checkThatBuildingsToDestroyCountMoreThanZero()) { return }
+        if(!checkThatBuildingsToDestroyCountMoreThanDeleted()) { return }
         newBuilding = {
             id: props.building.id,
             name: props.building.name,
