@@ -10,3 +10,7 @@ export enum Buildings {
     COLONY = 'Колония',
     CONTROL_CENTER = 'Центр управления',
 }
+
+export enum Materials {
+    Construction_Materials = 'Строительные материалы'
+}
