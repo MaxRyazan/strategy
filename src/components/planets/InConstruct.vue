@@ -49,13 +49,14 @@ function deleteFromQueue(){
 }
 function addToPlanetBuildings(){
     const exist = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.item.building.id)
+    console.log(exist)
     if(!exist) planetStore.selectedPlanet.buildings.push(props.item.building)
-    else exist.count += 1
+    else exist.count += props.item.building.count
 }
 function deleteBuilding(){
     const exist = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.item.building.id)
     if(!exist) return
-    else exist.count -= 1
+    else exist.count -= props.item.building.count
 }
 
 </script>

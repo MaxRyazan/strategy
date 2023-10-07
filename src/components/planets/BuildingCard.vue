@@ -43,14 +43,14 @@ function setToQueue(forDestroy: boolean){
         newBuilding = {
             id: props.building.id,
             name: props.building.name,
-            count: buildingCountToDestruct.value > 1 ? buildingCountToDestruct.value : 1,
+            count: Number(buildingCountToDestruct.value > 1 ? buildingCountToDestruct.value : 1),
             timeOfCreation: props.building.timeOfCreation
         }
     } else {
         newBuilding = {
             id: props.building.id,
             name: props.building.name,
-            count: buildingCountToConstruct.value > 1 ? buildingCountToConstruct.value : 1 ,
+            count: Number(buildingCountToConstruct.value > 1 ? buildingCountToConstruct.value : 1),
             timeOfCreation: props.building.timeOfCreation
         }
     }
@@ -59,7 +59,7 @@ function setToQueue(forDestroy: boolean){
     else id = planetStore.selectedPlanet.buildingsInConstruct[planetStore.selectedPlanet.buildingsInConstruct.length - 1].id + 1
     const objectToConstruct = {
         building: newBuilding,
-        willReadyAt: Date.now() + newBuilding.timeOfCreation,
+        willReadyAt: Date.now() + newBuilding.timeOfCreation * newBuilding.count,
         forDestroy: forDestroy,
         id: id
     }
