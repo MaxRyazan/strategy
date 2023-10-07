@@ -41,14 +41,14 @@ const props = defineProps<{
 .storage_item {
   height: 100%;
   width: 100%;
-  border: 1px dotted rgba(173, 216, 230, .3);
+  border-left: 1px dotted rgba(173, 216, 230, .3);
 }
 .container_item {
   width: 100%;
   white-space: nowrap;
   display: block;
   color: white;
-  padding: 3px 10px;
+  padding: 3px 1%;
   overflow: hidden;
 }
 .item__name {
