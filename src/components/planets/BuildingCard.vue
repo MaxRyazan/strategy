@@ -5,10 +5,13 @@ import {usePlanetStore} from "@/pinia/planetStore.ts";
 import {Buildings} from "@/typescript/enums.ts";
 import {onMounted, Ref, ref, watch} from "vue";
 import {BuildingsInConstruct} from "@/typescript/types.ts";
+import ReusableInput from "@/components/reusable/ReusableInput.vue";
 
 const planetStore = usePlanetStore()
 const isBuildingExistOnPlanet: Ref<boolean> = ref(false)
 const existingBuilding: Ref<BuildingInterface|undefined> = ref()
+const buildingCountToConstruct: Ref<number> = ref(1)
+const buildingCountToDestruct: Ref<number> = ref(1)
 
 const props = defineProps<{
     building: BuildingInterface
@@ -78,13 +81,13 @@ watch(planetStore.selectedPlanet.buildings, () => {
 
         </div>
         <div class="card_button">
-            <div>
-                <reusable-button @push="setToQueue(false)"
-                                 :class="{'inactive': existingBuilding?.name===Buildings.COLONY}">Построить
-                </reusable-button>
+            <div style="display: flex; width: 100%;">
+                <reusable-input type="number" for_button v-model="buildingCountToConstruct" />
+                <reusable-button in_card_button @push="setToQueue(false)" :class="{'inactive': existingBuilding?.name===Buildings.COLONY}">Построить</reusable-button>
             </div>
-            <div>
-                <reusable-button @push="setToQueue(true)" :class="{'inactive': !existingBuilding?.count}">Снести</reusable-button>
+            <div style="display: flex; width: 100%;">
+                <reusable-input type="number" for_button v-model="buildingCountToDestruct" />
+                <reusable-button in_card_button @push="setToQueue(true)" :class="{'inactive': !existingBuilding?.count}">Снести</reusable-button>
             </div>
         </div>
     </div>
@@ -124,22 +127,12 @@ watch(planetStore.selectedPlanet.buildings, () => {
 }
 
 .card_button {
+  width: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 50px;
   gap: 2px;
-
-  & button {
-    height: 24px;
-    width: 100%;
-    color: white;
-    cursor: pointer;
-    background-color: $primeViolet;
-
-    &:hover {
-      background-color: $secondViolet;
-    }
-  }
 }
 
 .inactive {
