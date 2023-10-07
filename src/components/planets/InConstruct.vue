@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {BuildingsInConstruct} from "@/typescript/types.ts";
 import {onMounted, ref, watch} from "vue";
+import {usePlanetStore} from "@/pinia/planetStore.ts";
 
+const planetStore = usePlanetStore()
 const props = defineProps<{
     item: BuildingsInConstruct
 }>()
@@ -11,8 +13,11 @@ const isComplete = ref(false)
 let interval: any;
 
 onMounted(() => {
+    console.log(planetStore.selectedPlanet.buildingsInConstruct)
     if(Date.now() > props.item.willReadyAt) {
         isComplete.value = true
+        deleteFromQueue()
+        addToPlanetBuildings()
         return
     }
     readyIn.value = new Date(props.item.willReadyAt - Date.now())
@@ -31,9 +36,17 @@ watch(readyIn, (value) => {
         clearInterval(interval)
         isComplete.value = true
         prettyReadyTime.value = '00:00'
+        deleteFromQueue()
+        addToPlanetBuildings()
     }
 })
 
+function deleteFromQueue(){
+    planetStore.selectedPlanet.buildingsInConstruct = planetStore.selectedPlanet.buildingsInConstruct.filter((b:BuildingsInConstruct) => b.id !== props.item.id)
+}
+function addToPlanetBuildings(){
+    planetStore.selectedPlanet.buildings.push(props.item.building)
+}
 
 </script>
 
