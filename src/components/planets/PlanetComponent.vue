@@ -48,16 +48,7 @@
                     <reusable-button>Склад</reusable-button>
                 </div>
                 <div class="in_build">
-
-
-<!--                    <div class="in_construct_container" :class="{'odd': idx%2===0}" v-for="(item, idx) in planetStore.selectedPlanet.buildingsInDestruct" :key="item.willReadyAt">-->
-<!--                        <div>{{item.building.name}}</div>-->
-<!--                        <div>{{item.building.count}}</div>-->
-<!--                        <div style="position: relative">-->
-<!--                            <div style="padding-right: 25px">{{item.willReadyAt}}</div>-->
-<!--                            <reusable-button @push="cancelBuildingConstruct(item.building)" close_btn style="right:0; width: 15px;height: 15px;"></reusable-button>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <in-construct v-for="item in planetStore.selectedPlanet.buildingsInConstruct" :key="item.id" :item="item"/>
                 </div>
                 <div class="buildings">
                     <div class="buildings_nav">
@@ -91,6 +82,7 @@ import EnergyBuildings from "@/components/planets/EnergyBuildings.vue";
 import ManufacturerBuildings from "@/components/planets/ManufacturerBuildings.vue";
 import SpecialBuildings from "@/components/planets/SpecialBuildings.vue";
 import ScienceBuildings from "@/components/planets/ScienceBuildings.vue";
+import InConstruct from "@/components/planets/InConstruct.vue";
 
 
 const props = defineProps<{
@@ -147,6 +139,7 @@ function showCategory(category: BuildingCategory){
   width: 100%;
   height: 30%;
   color: white;
+  overflow: auto;
 }
 .buildings{
   width: 100%;

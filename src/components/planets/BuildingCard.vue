@@ -26,7 +26,9 @@ function setToQueue(forDestroy: boolean){
         count: 1,
         timeOfCreation: props.building.timeOfCreation
     }
-    const id = planetStore.selectedPlanet.buildingsInConstruct.length
+    let id;
+    if(!planetStore.selectedPlanet.buildingsInConstruct.length) id = 0
+    else id = planetStore.selectedPlanet.buildingsInConstruct[planetStore.selectedPlanet.buildingsInConstruct.length - 1].id + 1
     const objectToConstruct = {
         building: newBuilding,
         willReadyAt: Date.now() + newBuilding.timeOfCreation,
