@@ -9,6 +9,7 @@ export class Planet implements PlanetInterface {
         public points: number,
         public buildings: BuildingInterface[],
         public buildingsInConstruct: BuildingsInConstruct[],
+        public storage: any[]
     )
     {}
 }

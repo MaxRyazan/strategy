@@ -7,4 +7,5 @@ export interface PlanetInterface {
     points: number
     buildings: BuildingInterface[]
     buildingsInConstruct: BuildingsInConstruct[]
+    storage: any[]
 }
