@@ -69,31 +69,9 @@
 
                 </div>
                 <div class="storage_component_wrapper storage" v-if="currentTopMenuTab === TopMenu.STORAGE">
-                    <div class="storage__resources">
-                        <reusable-text class="storage__column--title">Ресурсы</reusable-text>
-                    </div>
-                    <div class="storage__materials">
-                        <reusable-text class="storage__column--title">Материалы</reusable-text>
-                        <div style="display: flex;width: 100%; justify-content: space-between">
-                            <reusable-text class="item__name" style="cursor:default;  border: 1px dotted rgba(0,0,0, .3) ;  background-color: lightblue; color:black;border-top: 1px solid black;padding: 1px">Название</reusable-text>
-                            <reusable-text class="item__count" style="cursor:default;  border: 1px dotted rgba(0,0,0, .3) ; background-color: lightblue; color:black;border-top: 1px solid black;padding: 1px">Количество</reusable-text>
-                            <reusable-text class="item__weight" style="cursor:default;  border: 1px dotted rgba(0,0,0, .3) ;background-color: lightblue; color:black;border-top: 1px solid black;padding: 1px">Вес</reusable-text>
-                        </div>
-                        <div style="display: flex; height: 100%;"  v-for="material in storageMaterials" :key="material.id">
-                            <div class="storage_item item__name">
-                                <reusable-text style="width: 100%; display: block; color: white; padding: 3px 20px;">{{ material.name }}</reusable-text>
-                            </div>
-                            <div class="storage_item item__count">
-                                <reusable-text style="width: 100%; display: block; color: white; padding: 3px">{{ material.count}}</reusable-text>
-                            </div>
-                            <div class="storage_item item__weight">
-                                <reusable-text style="width: 100%; display: block; color: white; padding: 3px 20px;">{{ material.count * material.weight}}</reusable-text>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="storage__modules">
-                        <reusable-text class="storage__column--title">Модули</reusable-text>
-                    </div>
+                    <storage-resources-view :resources="filteredResources"/>
+                    <storage-materials-view :materials="filteredMaterials"/>
+                    <storage-modules-view :modules="filteredModules"/>
                 </div>
             </div>
         </div>
@@ -101,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref, shallowRef, watch} from 'vue'
+import {computed, onMounted, ref, shallowRef, watch} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
@@ -114,8 +92,9 @@ import SpecialBuildings from "@/components/planets/SpecialBuildings.vue";
 import ScienceBuildings from "@/components/planets/ScienceBuildings.vue";
 import InConstruct from "@/components/planets/InConstruct.vue";
 import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
-import ReusableText from "@/components/reusable/text/ReusableTextForDescription.vue";
-import {MaterialInterface} from "@/typescript/classes/interfaces_for_classes/MaterialInterface.ts";
+import StorageMaterialsView from "@/components/planets/StorageMaterialsView.vue";
+import StorageModulesView from "@/components/planets/StorageModulesView.vue";
+import StorageResourcesView from "@/components/planets/StorageResourcesView.vue";
 
 
 const props = defineProps<{
@@ -132,20 +111,19 @@ const planetStore = usePlanetStore()
 const someValue = ref(222)
 const emptyStorageValue = ref(0)
 
-let storageMaterials: MaterialInterface[] = reactive([])
 
 onMounted(() => {
     calculateStorageCapacity()
-    filteredMaterials()
-
 })
 watch(planetStore.selectedPlanet.buildings, () => {
     calculateStorageCapacity()
 })
 
-function filteredMaterials(){
-    storageMaterials = planetStore.selectedPlanet.storage.filter((item:any) => item.category === StorageEntitiesCategory.MATERIAL)
-}
+
+const filteredResources = computed(() => planetStore.selectedPlanet.storage.filter((item:any) => item.category === StorageEntitiesCategory.RESOURCE))
+const filteredMaterials = computed(() => planetStore.selectedPlanet.storage.filter((item:any) => item.category === StorageEntitiesCategory.MATERIAL))
+const filteredModules = computed(() => planetStore.selectedPlanet.storage.filter((item:any) => item.category === StorageEntitiesCategory.MODULE))
+
 
 function calculateStorageCapacity(){
     emptyStorageValue.value = 0
@@ -191,38 +169,9 @@ function showCategory(category: BuildingCategory){
 .storage {
   display: flex;
   height: calc(100% - 28px);
-}
-.storage__resources,
-.storage__materials,
-.storage__modules {
   width: 100%;
-  border: 1px solid white;
-  height: 100%;
-  text-align: center;
-  overflow: hidden;
 }
-.storage_item{
-  height: 100%;
-  width: 100%;
-  border: 1px dotted rgba(173, 216, 230, .3)
-}
-.item__name{
-  width: 60%;
-}
-.item__count{
-  width: 20%;
-}
-.item__weight{
-  width: 20%;
-}
-.storage__column--title{
-  display: block;
-  min-width: 100%;
-  background-color: lightblue;
-  padding: 4px;
-  cursor: default;
-  color: black;
-}
+
 .right{
   position: relative;
   width: 100%;
