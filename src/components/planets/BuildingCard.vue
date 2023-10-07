@@ -65,6 +65,12 @@ function setToQueue(forDestroy: boolean){
     }
     Object.freeze(objectToConstruct)
     planetStore.selectedPlanet.buildingsInConstruct.push(objectToConstruct)
+    clearCountInputFields()
+}
+
+function clearCountInputFields(){
+    buildingCountToConstruct.value = 1
+    buildingCountToDestruct.value = 1
 }
 
 /**
