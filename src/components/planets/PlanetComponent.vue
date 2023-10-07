@@ -108,7 +108,7 @@ const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
 const currentTopMenuTab = ref(TopMenu.BUILDING)
 const currentComponent = shallowRef(AdministrativeBuildings)
 const planetStore = usePlanetStore()
-const someValue = ref(222)
+const someValue = ref(0)
 const emptyStorageValue = ref(0)
 
 

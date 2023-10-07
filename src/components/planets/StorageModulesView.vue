@@ -12,6 +12,7 @@ const props = defineProps<{
 .storage__modules{
   border: 1px solid white;
   width: 100%;
+  text-align: center;
 }
 .storage__column--title {
   display: block;

@@ -32,6 +32,7 @@ const props = defineProps<{
 .storage__materials{
   width: 100%;
   border: 1px solid white;
+  text-align: center;
 }
 .storage_item {
   height: 100%;
