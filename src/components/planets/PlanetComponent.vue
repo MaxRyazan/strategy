@@ -48,7 +48,7 @@
                     <reusable-button>Склад</reusable-button>
                 </div>
                 <div class="in_build">
-                        <construct-container v-for="item in planetStore.selectedPlanet.buildingsInConstruct" :key="item.willReadyAt"  :item="item"/>
+
 
 <!--                    <div class="in_construct_container" :class="{'odd': idx%2===0}" v-for="(item, idx) in planetStore.selectedPlanet.buildingsInDestruct" :key="item.willReadyAt">-->
 <!--                        <div>{{item.building.name}}</div>-->
@@ -91,7 +91,6 @@ import EnergyBuildings from "@/components/planets/EnergyBuildings.vue";
 import ManufacturerBuildings from "@/components/planets/ManufacturerBuildings.vue";
 import SpecialBuildings from "@/components/planets/SpecialBuildings.vue";
 import ScienceBuildings from "@/components/planets/ScienceBuildings.vue";
-import ConstructContainer from "@/components/planets/ConstructContainer.vue";
 
 
 const props = defineProps<{

@@ -1,57 +1,40 @@
 <script setup lang="ts">
 import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
-
 import {usePlanetStore} from "@/pinia/planetStore.ts";
-import { onMounted, Ref, ref, watch} from "vue";
 import {Buildings} from "@/typescript/enums.ts";
-import {Planet} from "@/typescript/classes/Planet.ts";
-import {BuildingsInConstruct} from "@/typescript/types.ts";
+import {onMounted, Ref, ref} from "vue";
 
 const planetStore = usePlanetStore()
-const selectedPlanet: Planet = planetStore.selectedPlanet
+const isBuildingExistOnPlanet: Ref<boolean> = ref(false)
+const existingBuilding: Ref<BuildingInterface|undefined> = ref()
+
 const props = defineProps<{
     building: BuildingInterface
 }>()
-const existingBuilding: Ref<BuildingInterface> = ref() as Ref<BuildingInterface>
-
 onMounted(() => {
-    const exist: BuildingInterface|undefined = selectedPlanet.buildings.find((building: BuildingInterface) => building.id === props.building.id)
-    if(exist) existingBuilding.value = exist
+    isBuildingExistOnPlanet.value = planetStore.selectedPlanet.buildings.some((b:BuildingInterface) => b.id === props.building.id)
+    if(isBuildingExistOnPlanet.value) existingBuilding.value = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.building.id)
 })
 
-function addBuildingToBuildQueue(){
-    const alreadyCreated = selectedPlanet.buildings.find((item:BuildingInterface) => item.id === props.building.id)
-    const alreadyInProgress = planetStore.selectedPlanet.buildingsInConstruct.find((item:BuildingsInConstruct) => item.building.id === props.building.id)
-    if((alreadyInProgress || alreadyCreated) && props.building.name === Buildings.COLONY) return
-    if(!alreadyInProgress) {
-        const newBuilding = Object.assign({}, props.building)
-        newBuilding.count += 1
-        selectedPlanet.buildingsInConstruct.push({
-            building: newBuilding,
-            willReadyAt: Date.now() + props.building.timeOfCreation,
-            forDestroy: false
-        })
+function setToQueue(forDestroy: boolean){
+    const newBuilding: BuildingInterface = {
+        id: props.building.id,
+        name: props.building.name,
+        count: 1,
+        timeOfCreation: props.building.timeOfCreation
     }
-    else alreadyInProgress.building.count += 1
-}
-function addBuildingToDestroyQueue(){
-    const alreadyCreated: BuildingInterface|undefined = selectedPlanet.buildings.find((item:BuildingInterface) => item.id === props.building.id)
-    if(alreadyCreated && alreadyCreated.count > 0){
-        const buildingForDestruct = props.building
-        buildingForDestruct.count = 1
-        selectedPlanet.buildingsInConstruct.push({building: buildingForDestruct, willReadyAt: (Date.now() + props.building.timeOfCreation / 1.5), forDestroy: true})
+    const id = planetStore.selectedPlanet.buildingsInConstruct.length
+    const objectToConstruct = {
+        building: newBuilding,
+        willReadyAt: Date.now() + newBuilding.timeOfCreation,
+        forDestroy: forDestroy,
+        id: id
     }
+    Object.freeze(objectToConstruct)
+    planetStore.selectedPlanet.buildingsInConstruct.push(objectToConstruct)
 }
 
-/**
- * Здесь происходит отрисовка текущего количества построенного здания, после того, как в таймере строительства кончается отсчет
- */
-watch(planetStore.selectedPlanet.buildings, () => {
-    const existing: BuildingInterface = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.building.id)
-    if(existingBuilding.value) existingBuilding.value.count = existing.count
-    existingBuilding.value = existing
-})
 
 
 </script>
@@ -60,14 +43,17 @@ watch(planetStore.selectedPlanet.buildings, () => {
     <div class="card">
         <div class="card_header">
             <div class="card_name">{{ props.building.name }}</div>
-            <div class="card_count">{{ existingBuilding?.count > 0 ? existingBuilding?.count : '' }}</div>
+            <div class="card_count">{{existingBuilding? existingBuilding.count : ''}}</div>
         </div>
         <div class="card_image">
 
         </div>
         <div class="card_button">
-            <reusable-button @push="addBuildingToBuildQueue" :class="{'inactive': existingBuilding?.name===Buildings.COLONY}">Построить</reusable-button>
-            <reusable-button @push="addBuildingToDestroyQueue" :class="{'inactive': !existingBuilding}">Снести</reusable-button>
+            <reusable-button @push="setToQueue(false)"
+                             :class="{'inactive': existingBuilding?.name===Buildings.COLONY}">Построить
+            </reusable-button>
+            <reusable-button @push="setToQueue(true)" :class="{'inactive': !existingBuilding}">Снести
+            </reusable-button>
         </div>
     </div>
 </template>
@@ -87,10 +73,12 @@ watch(planetStore.selectedPlanet.buildings, () => {
   flex-direction: column;
   gap: 2px;
 }
-.card_name{
+
+.card_name {
   width: 85%;
 }
-.card_header{
+
+.card_header {
   display: flex;
   justify-content: space-between;
   padding: 0 5px;
@@ -98,7 +86,8 @@ watch(planetStore.selectedPlanet.buildings, () => {
   height: 20%;
   cursor: default;
 }
-.card_image{
+
+.card_image {
   height: 60%;
 }
 
@@ -107,20 +96,24 @@ watch(planetStore.selectedPlanet.buildings, () => {
   flex-direction: column;
   height: 50px;
   gap: 2px;
+
   & button {
     height: 24px;
     width: 100%;
     color: white;
     cursor: pointer;
     background-color: $primeViolet;
+
     &:hover {
       background-color: $secondViolet;
     }
   }
 }
-.inactive{
+
+.inactive {
   color: gray !important;
-  &:hover{
+
+  &:hover {
     cursor: default;
     background-color: $primeViolet !important;
   }

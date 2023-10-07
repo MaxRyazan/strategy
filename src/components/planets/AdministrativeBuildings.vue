@@ -1,7 +1,8 @@
 <script setup lang="ts">
 
 import buildings from "@/typescript/buildings.ts";
-import BuildingCard from '@/components/planets/BuildingCard.vue';
+import BuildingCard from "@/components/planets/BuildingCard.vue";
+
 
 </script>
 

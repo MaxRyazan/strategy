@@ -4,4 +4,5 @@ export interface BuildingsInConstruct {
     building: BuildingInterface,
     willReadyAt: number
     forDestroy: boolean
+    id: number
 }
