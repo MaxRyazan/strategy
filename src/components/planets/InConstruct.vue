@@ -37,7 +37,8 @@ watch(readyIn, (value) => {
         isComplete.value = true
         prettyReadyTime.value = '00:00'
         deleteFromQueue()
-        addToPlanetBuildings()
+        if(!props.item.forDestroy) addToPlanetBuildings()
+        else deleteBuilding()
     }
 })
 
@@ -48,6 +49,11 @@ function addToPlanetBuildings(){
     const exist = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.item.building.id)
     if(!exist) planetStore.selectedPlanet.buildings.push(props.item.building)
     else exist.count += 1
+}
+function deleteBuilding(){
+    const exist = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.item.building.id)
+    if(!exist) return
+    else exist.count -= 1
 }
 
 </script>

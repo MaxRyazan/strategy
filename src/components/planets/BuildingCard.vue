@@ -19,7 +19,9 @@ onMounted(() => {
 
 function setToQueue(forDestroy: boolean){
     if(!existingBuilding.value && forDestroy){ return }
-
+    if((!existingBuilding.value || existingBuilding.value?.count <= 0) && forDestroy) {
+        return;
+    }
     const newBuilding: BuildingInterface = {
         id: props.building.id,
         name: props.building.name,
@@ -45,6 +47,7 @@ function setToQueue(forDestroy: boolean){
 watch(planetStore.selectedPlanet.buildings, () => {
     const exist = planetStore.selectedPlanet.buildings.find((b: BuildingInterface) => b.id === props.building.id)
     if(exist) existingBuilding.value = exist
+
 })
 
 </script>
@@ -53,7 +56,7 @@ watch(planetStore.selectedPlanet.buildings, () => {
     <div class="card">
         <div class="card_header">
             <div class="card_name">{{ props.building.name }}</div>
-            <div class="card_count">{{existingBuilding? existingBuilding.count : ''}}</div>
+            <div class="card_count">{{existingBuilding ? (existingBuilding.count > 0 ? existingBuilding.count : '') : ''}}</div>
         </div>
         <div class="card_image">
 
@@ -65,7 +68,7 @@ watch(planetStore.selectedPlanet.buildings, () => {
                 </reusable-button>
             </div>
             <div>
-                <reusable-button @push="setToQueue(true)" :class="{'inactive': !existingBuilding}">Снести</reusable-button>
+                <reusable-button @push="setToQueue(true)" :class="{'inactive': !existingBuilding?.count}">Снести</reusable-button>
             </div>
         </div>
     </div>
