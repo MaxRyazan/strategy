@@ -37,15 +37,22 @@ function setToQueue(forDestroy: boolean){
     if((!existingBuilding.value || existingBuilding.value?.count <= 0) && forDestroy) {
         return;
     }
+    let newBuilding: BuildingInterface;
     if(forDestroy){
         if(!checkThatBuildingsToDestroyCountMoreThanZero()) { return }
-    }
-
-    const newBuilding: BuildingInterface = {
-        id: props.building.id,
-        name: props.building.name,
-        count: 1,
-        timeOfCreation: props.building.timeOfCreation
+        newBuilding = {
+            id: props.building.id,
+            name: props.building.name,
+            count: buildingCountToDestruct.value > 1 ? buildingCountToDestruct.value : 1,
+            timeOfCreation: props.building.timeOfCreation
+        }
+    } else {
+        newBuilding = {
+            id: props.building.id,
+            name: props.building.name,
+            count: buildingCountToConstruct.value > 1 ? buildingCountToConstruct.value : 1 ,
+            timeOfCreation: props.building.timeOfCreation
+        }
     }
     let id;
     if(!planetStore.selectedPlanet.buildingsInConstruct.length) id = 0
