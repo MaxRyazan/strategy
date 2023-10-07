@@ -18,6 +18,8 @@ onMounted(() => {
 })
 
 function setToQueue(forDestroy: boolean){
+    if(!existingBuilding.value && forDestroy){ return }
+
     const newBuilding: BuildingInterface = {
         id: props.building.id,
         name: props.building.name,
@@ -49,11 +51,14 @@ function setToQueue(forDestroy: boolean){
 
         </div>
         <div class="card_button">
-            <reusable-button @push="setToQueue(false)"
-                             :class="{'inactive': existingBuilding?.name===Buildings.COLONY}">Построить
-            </reusable-button>
-            <reusable-button @push="setToQueue(true)" :class="{'inactive': !existingBuilding}">Снести
-            </reusable-button>
+            <div>
+                <reusable-button @push="setToQueue(false)"
+                                 :class="{'inactive': existingBuilding?.name===Buildings.COLONY}">Построить
+                </reusable-button>
+            </div>
+            <div>
+                <reusable-button @push="setToQueue(true)" :class="{'inactive': !existingBuilding}">Снести</reusable-button>
+            </div>
         </div>
     </div>
 </template>

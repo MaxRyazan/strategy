@@ -2,7 +2,7 @@
 
 import buildings from "@/typescript/buildings.ts";
 import BuildingCard from "@/components/planets/BuildingCard.vue";
-
+import {usePlanetStore} from "@/pinia/planetStore.ts";
 
 </script>
 
