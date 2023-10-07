@@ -21,14 +21,16 @@ onMounted(() => {
         return
     }
     readyIn.value = new Date(props.item.willReadyAt - Date.now())
-    prettyReadyTime.value = (readyIn.value.getMinutes()<10 ? '0'+readyIn.value.getMinutes():readyIn.value.getMinutes()) + ':' + (readyIn.value.getSeconds()<10 ? '0'+readyIn.value.getSeconds():readyIn.value.getSeconds())
+    prettyReadyTime.value = timeToPrettyInTimer(readyIn.value)
     interval = setInterval(() => {
         readyIn.value = new Date(props.item.willReadyAt - Date.now())
-        prettyReadyTime.value = (readyIn.value.getMinutes()<10 ? '0'+readyIn.value.getMinutes():readyIn.value.getMinutes()) + ':' + (readyIn.value.getSeconds()<10 ? '0'+readyIn.value.getSeconds():readyIn.value.getSeconds())
+        prettyReadyTime.value = timeToPrettyInTimer(readyIn.value)
     }, 1000)
 })
 
-
+function timeToPrettyInTimer(notPretty: Date){
+    return (notPretty.getMinutes()<10 ? '0'+notPretty.getMinutes():notPretty.getMinutes()) + ':' + (notPretty.getSeconds()<10 ? '0'+notPretty.getSeconds():notPretty.getSeconds())
+}
 
 
 watch(readyIn, (value) => {
