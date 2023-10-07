@@ -18,7 +18,7 @@
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Максимум населения" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Электричество" />
                     <planet-description-card icon="lightning.png" :variableValue="someValue" text="Производство еды" />
-                    <planet-description-card icon="lightning.png" :variableValue="someValue" text="Свободное место на складе" />
+                    <planet-description-card icon="lightning.png" :variableValue="emptyStorageValue" text="Свободное место на складе" />
                 </div>
                 <hr style="margin: 8px 0"/>
                 <div class="left__tech_info">
@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, shallowRef} from 'vue'
+import {onMounted, ref, shallowRef, watch} from 'vue'
 import PlanetDescriptionCard from '@/components/planets/PlanetDescriptionCard.vue'
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
@@ -83,6 +83,7 @@ import ManufacturerBuildings from "@/components/planets/ManufacturerBuildings.vu
 import SpecialBuildings from "@/components/planets/SpecialBuildings.vue";
 import ScienceBuildings from "@/components/planets/ScienceBuildings.vue";
 import InConstruct from "@/components/planets/InConstruct.vue";
+import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
 
 
 const props = defineProps<{
@@ -96,9 +97,22 @@ const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
 const currentComponent = shallowRef(AdministrativeBuildings)
 const planetStore = usePlanetStore()
 const someValue = ref(222)
+const emptyStorageValue = ref(0)
 
 
+onMounted(() => {
+    calculateStorageCapacity()
+})
+watch(planetStore.selectedPlanet.buildings, () => {
+    calculateStorageCapacity()
+})
 
+function calculateStorageCapacity(){
+    emptyStorageValue.value = 0
+    planetStore.selectedPlanet.buildings.forEach((b:BuildingInterface) => {
+        if(b.addStorage) emptyStorageValue.value += b.addStorage * b.count
+    })
+}
 function showCategory(category: BuildingCategory){
     currentBuildingTab.value = category
     switch (currentBuildingTab.value){

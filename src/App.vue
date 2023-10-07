@@ -7,11 +7,12 @@ import {Colony} from "@/typescript/classes/buildings/Colony.ts";
 
 onMounted(() => {
     const playerStore = usePlayerStore()
-    const planet = new Planet(1, 'Earth', 300, [], [], [])
-    const planet2 = new Planet(2, 'Mars', 400, [], [], [])
-    const planet3 = new Planet(3, 'Venus', 200, [], [], [])
+    const planet = new Planet(1, 'Earth', 300, [], [])
+    const planet2 = new Planet(2, 'Mars', 400, [], [])
+    const planet3 = new Planet(3, 'Venus', 200, [], [])
     const colony = new Colony(1)
     planet.buildings.push(colony)
+
     playerStore.player = new Player(1, 'shooter', {homePlanet: planet, colonies: [planet2, planet3]})
 })
 </script>

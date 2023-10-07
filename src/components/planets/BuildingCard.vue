@@ -41,6 +41,7 @@ function setToQueue(forDestroy: boolean){
     if(forDestroy){
         if(!checkThatBuildingsToDestroyCountMoreThanDeleted()) { return }
         newBuilding = {
+            requiredMaterials: [],
             id: props.building.id,
             name: props.building.name,
             count: Number(buildingCountToDestruct.value > 1 ? buildingCountToDestruct.value : 1),
@@ -48,6 +49,8 @@ function setToQueue(forDestroy: boolean){
         }
     } else {
         newBuilding = {
+            addStorage: props.building.addStorage ? props.building.addStorage: 0,
+            requiredMaterials: props.building.requiredMaterials,
             id: props.building.id,
             name: props.building.name,
             count: Number(buildingCountToConstruct.value > 1 ? buildingCountToConstruct.value : 1),

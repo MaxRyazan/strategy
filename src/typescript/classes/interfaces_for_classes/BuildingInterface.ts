@@ -6,4 +6,6 @@ export interface BuildingInterface {
     count: number,
     timeOfCreation: number,
     requiredMaterials: MaterialInterface[]
+
+    addStorage?: number
 }

@@ -9,9 +9,11 @@ export class Colony implements BuildingInterface {
         this.name = Buildings.COLONY
         this.timeOfCreation = CREATION_TIME * 1.01
         this.requiredMaterials = []
+        this.addStorage = 5000
     }
     readonly id: number
     readonly name: Buildings.COLONY
     readonly timeOfCreation: number
     readonly requiredMaterials: MaterialInterface[];
+    readonly addStorage: number
 }
