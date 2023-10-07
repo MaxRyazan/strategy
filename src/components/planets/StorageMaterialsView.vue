@@ -6,15 +6,15 @@
             <reusable-text class="item__count" style="cursor:default;  border: 1px dotted rgba(0,0,0, .3) ; background-color: lightblue; color:black;border-top: 1px solid black;padding: 1px">Количество</reusable-text>
             <reusable-text class="item__weight" style="cursor:default;  border: 1px dotted rgba(0,0,0, .3) ;background-color: lightblue; color:black;border-top: 1px solid black;padding: 1px">Вес</reusable-text>
         </div>
-        <div style="display: flex; height: 100%;" v-for="material in props.materials" :key="material.id">
+        <div class="container" v-for="material in props.materials" :key="material.id">
             <div class="storage_item item__name">
-                <reusable-text style="width: 100%; display: block; color: white; padding: 3px 20px;">{{material.name }}</reusable-text>
+                <reusable-text class="container_item">{{material.name }}</reusable-text>
             </div>
             <div class="storage_item item__count">
-                <reusable-text style="width: 100%; display: block; color: white; padding: 3px">{{ material.count }}</reusable-text>
+                <reusable-text class="container_item">{{ material.count }}</reusable-text>
             </div>
             <div class="storage_item item__weight">
-                <reusable-text style="width: 100%; display: block; color: white; padding: 3px 20px;">{{material.count * material.weight }}</reusable-text>
+                <reusable-text class="container_item">{{material.count * material.weight }}</reusable-text>
             </div>
         </div>
     </div>
@@ -29,6 +29,10 @@ const props = defineProps<{
 
 </script>
 <style lang="scss" scoped>
+.container {
+  display: flex;
+  height: calc(100% - 40px);
+}
 .storage__materials{
   width: 100%;
   border: 1px solid white;
@@ -39,7 +43,14 @@ const props = defineProps<{
   width: 100%;
   border: 1px dotted rgba(173, 216, 230, .3);
 }
-
+.container_item {
+  width: 100%;
+  white-space: nowrap;
+  display: block;
+  color: white;
+  padding: 3px 10px;
+  overflow: hidden;
+}
 .item__name {
   width: 60%;
 }
