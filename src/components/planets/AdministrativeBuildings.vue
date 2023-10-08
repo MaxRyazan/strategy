@@ -5,6 +5,7 @@ import BuildingCard from "@/components/planets/BuildingCard.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
 import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
 const planetStore = usePlanetStore()
+
 </script>
 
 <template>

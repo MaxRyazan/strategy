@@ -3,7 +3,7 @@ import {onMounted, ref} from "vue";
 
 const inputType = ref('text')
 const props = defineProps<{
-    modelValue: String
+    modelValue: any
     type?:string
     for_button?: boolean
 }>()

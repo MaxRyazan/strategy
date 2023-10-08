@@ -2,10 +2,11 @@
 import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
-import {Buildings} from "@/typescript/enums.ts";
+import {Buildings, StorageEntitiesCategory} from "@/typescript/enums.ts";
 import {onMounted, Ref, ref, watch} from "vue";
 import {BuildingsInConstruct} from "@/typescript/types.ts";
 import ReusableInput from "@/components/reusable/ReusableInput.vue";
+import {MaterialInterface} from "@/typescript/classes/interfaces_for_classes/MaterialInterface.ts";
 
 const planetStore = usePlanetStore()
 const isBuildingExistOnPlanet: Ref<boolean> = ref(false)
@@ -32,6 +33,24 @@ function checkThatBuildingsToDestroyCountMoreThanDeleted(){
     return count >= buildingCountToDestruct.value
 }
 
+function isMaterialsEnough(newBuilding: BuildingInterface){
+    let enough = true
+    const materials = planetStore.selectedPlanet.storage.filter((st:any) => st.category === StorageEntitiesCategory.MATERIAL)
+
+    for(let item of newBuilding.requiredMaterials){
+        const existOnStorage = materials.find((onStorage:MaterialInterface) => onStorage.id === item.id)
+        if(!existOnStorage || existOnStorage.count < item.count * newBuilding.count) enough = false
+    }
+    return enough
+}
+function subtractMaterials(newBuilding: BuildingInterface){
+    const materials = planetStore.selectedPlanet.storage.filter((st:any) => st.category === StorageEntitiesCategory.MATERIAL)
+    for(let item of newBuilding.requiredMaterials){
+        const existOnStorage = materials.find((onStorage:MaterialInterface) => onStorage.id === item.id)
+        existOnStorage.count -= item.count * newBuilding.count
+    }
+}
+
 function setToQueue(forDestroy: boolean){
     if(!existingBuilding.value && forDestroy){ return }
     if((!existingBuilding.value || existingBuilding.value?.count <= 0) && forDestroy) {
@@ -54,8 +73,10 @@ function setToQueue(forDestroy: boolean){
             id: props.building.id,
             name: props.building.name,
             count: Number(buildingCountToConstruct.value > 1 ? buildingCountToConstruct.value : 1),
-            timeOfCreation: props.building.timeOfCreation
+            timeOfCreation: props.building.timeOfCreation,
         }
+        if(!isMaterialsEnough(newBuilding)){return}
+        subtractMaterials(newBuilding)
     }
     let id;
     if(!planetStore.selectedPlanet.buildingsInConstruct.length) id = 0
