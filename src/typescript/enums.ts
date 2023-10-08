@@ -6,6 +6,10 @@ export enum BuildingCategory {
     SPECIAL = 'SPECIAL',
 }
 
+export enum ScienceCategory {
+    ECONOMIC= 'Экономика'
+}
+
 export enum TopMenu {
     BUILDING = 'Строительство',
     STORAGE = 'Склад'
@@ -21,8 +25,16 @@ export enum Materials {
     Electronic = 'Электроника',
 }
 
+export enum Science {
+    Faster_Building_Construct = 'Ускорение строительства зданий'
+}
+
 export enum StorageEntitiesCategory {
     RESOURCE = 'Ресурс',
     MATERIAL = 'Материал',
     MODULE = 'Модуль',
+}
+
+export enum Bonuses {
+    Faster_Building_Construct = 'Ускорение строительства зданий'
 }

@@ -212,6 +212,7 @@ function showCategory(category: BuildingCategory){
   padding: 3px;
   display: flex;
   gap: 2px;
+  background-color:black;
 }
 .planet_resize{
   cursor: col-resize;

@@ -6,6 +6,7 @@ import {Planet} from "@/typescript/classes/Planet.ts";
 import {Colony} from "@/typescript/classes/buildings/Colony.ts";
 import {ConstructionMaterials} from "@/typescript/classes/materials/ConstructionMaterials.ts";
 import {Electronic} from "@/typescript/classes/materials/Electronic.ts";
+import {FasterBuildingConstruct} from "@/typescript/classes/science/FasterBuildingConstruct.ts";
 
 onMounted(() => {
     const playerStore = usePlayerStore()
@@ -18,7 +19,7 @@ onMounted(() => {
     planet.buildings.push(colony)
     planet.storage.push(constrMaterial)
     planet.storage.push(electronic)
-    playerStore.player = new Player(1, 'shooter', {homePlanet: planet, colonies: [planet2, planet3]})
+    playerStore.player = new Player(1, 'shooter', {homePlanet: planet, colonies: [planet2, planet3], science: [new FasterBuildingConstruct(5)]})
 })
 </script>
 
