@@ -39,6 +39,10 @@ console.log(props.materials)
 .container__item{
   width: 100%;
   display: flex;
+  cursor: default;
+  &:hover{
+    background-color: lightblue;
+  }
 }
 .storage__materials{
   width: 100%;

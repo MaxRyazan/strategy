@@ -115,7 +115,11 @@ const emptyStorageValue = ref(0)
 onMounted(() => {
     calculateStorageCapacity()
 })
-watch(planetStore.selectedPlanet.buildings, () => {
+watch([
+        planetStore.selectedPlanet.buildings,
+        planetStore.selectedPlanet.storage
+    ],
+    () => {
     calculateStorageCapacity()
 })
 
@@ -129,6 +133,9 @@ function calculateStorageCapacity(){
     emptyStorageValue.value = 0
     planetStore.selectedPlanet.buildings.forEach((b:BuildingInterface) => {
         if(b.addStorage) emptyStorageValue.value += b.addStorage * b.count
+    })
+    planetStore.selectedPlanet.storage.forEach((item:any) => {
+        emptyStorageValue.value -= item.weight * item.count
     })
 }
 function showCategory(category: BuildingCategory){
