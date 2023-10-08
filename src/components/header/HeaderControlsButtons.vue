@@ -1,6 +1,9 @@
 <template>
-    <reusable-button @push="isPlanetListOpen=true" style=" width: 75px;" v-if="!isPlanetListOpen">+</reusable-button>
-    <reusable-button @push="isPlanetListOpen=false" style=" width: 75px;" v-else>-</reusable-button>
+    <div class="top_buttons">
+        <reusable-button @push="isPlanetListOpen=true" style=" width: 75px;" v-if="!isPlanetListOpen">+</reusable-button>
+        <reusable-button @push="isPlanetListOpen=false" style=" width: 75px;" v-else>-</reusable-button>
+        <reusable-button @push="$emit('openScience')">Исследования</reusable-button>
+    </div>
     <div class="player_colonies" v-if="isPlanetListOpen">
         <reusable-button style="width: 100%;" @push="$emit('openPlanet', player?.account.homePlanet)">{{player?.account.homePlanet.name}}</reusable-button>
         <div v-for="planet in player?.account.colonies" :key="planet.id">
@@ -24,6 +27,7 @@ onMounted(() => {
 })
 defineEmits<{
     (e: 'openPlanet', planet: Planet): void
+    (e: 'openScience'): void
 }>()
 </script>
 <style lang="scss" scoped>
@@ -33,5 +37,13 @@ defineEmits<{
   flex-direction: column;
   gap: 1px;
   width: 75px;
+  padding: 2px;
+}
+.top_buttons {
+  width: calc(100% - 6px);
+  border: 1px solid red;
+  display: flex;
+  gap: 5px;
+  padding: 2px;
 }
 </style>
