@@ -17,7 +17,8 @@ export enum Buildings {
 }
 
 export enum Materials {
-    Construction_Materials = 'Строительные материалы'
+    Construction_Materials = 'Строительные материалы',
+    Electronic = 'Электроника',
 }
 
 export enum StorageEntitiesCategory {
