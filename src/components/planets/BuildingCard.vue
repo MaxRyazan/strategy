@@ -60,7 +60,7 @@ function setToQueue(forDestroy: boolean){
     if(forDestroy){
         if(!checkThatBuildingsToDestroyCountMoreThanDeleted()) { return }
         newBuilding = {
-            requiredMaterials: [],
+            requiredMaterials: props.building.requiredMaterials,
             id: props.building.id,
             name: props.building.name,
             count: Number(buildingCountToDestruct.value > 1 ? buildingCountToDestruct.value : 1),

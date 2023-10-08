@@ -3,6 +3,8 @@ import {BuildingsInConstruct} from "@/typescript/types.ts";
 import {onMounted, ref, watch} from "vue";
 import {usePlanetStore} from "@/pinia/planetStore.ts";
 import {BuildingInterface} from "@/typescript/classes/interfaces_for_classes/BuildingInterface.ts";
+import {StorageEntitiesCategory} from "@/typescript/enums.ts";
+import {MaterialInterface} from "@/typescript/classes/interfaces_for_classes/MaterialInterface.ts";
 
 const planetStore = usePlanetStore()
 const props = defineProps<{
@@ -32,12 +34,26 @@ function timeToPrettyInTimer(notPretty: Date){
     return (notPretty.getMinutes()<10 ? '0'+notPretty.getMinutes():notPretty.getMinutes()) + ':' + (notPretty.getSeconds()<10 ? '0'+notPretty.getSeconds():notPretty.getSeconds())
 }
 
+function returnMaterialsForBuildingDestruct(){
+
+    const materials = planetStore.selectedPlanet.storage.filter((st:any) => st.category === StorageEntitiesCategory.MATERIAL)
+    for(let res of props.item.building.requiredMaterials){
+        const existOnStorage = materials.find((onStorage:MaterialInterface) => onStorage.id === res.id)
+        if(existOnStorage) existOnStorage.count += Math.floor((res.count * props.item.building.count) / 2)
+        else {
+            res.count = (res.count * props.item.building.count) / 2
+            planetStore.selectedPlanet.storage.push(res)
+        }
+    }
+}
+
 
 watch(readyIn, (value) => {
     if(value.getMinutes() <= 0 && value.getSeconds() <= 0) {
         clearInterval(interval)
         isComplete.value = true
         prettyReadyTime.value = '00:00'
+        if(props.item.forDestroy) returnMaterialsForBuildingDestruct()
         deleteFromQueue()
         if(!props.item.forDestroy) addToPlanetBuildings()
         else deleteBuilding()
@@ -49,7 +65,6 @@ function deleteFromQueue(){
 }
 function addToPlanetBuildings(){
     const exist = planetStore.selectedPlanet.buildings.find((b:BuildingInterface) => b.id === props.item.building.id)
-    console.log(exist)
     if(!exist) planetStore.selectedPlanet.buildings.push(props.item.building)
     else exist.count += props.item.building.count
 }

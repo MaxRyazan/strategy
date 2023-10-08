@@ -7,13 +7,13 @@
             <reusable-text class="item__weight" style="cursor:default;  border: 1px dotted rgba(0,0,0, .3) ;background-color: lightblue; color:black;border-top: 1px solid black;padding: 1px">Вес</reusable-text>
         </div>
         <div class="container" v-for="material in props.materials" :key="material.id">
-            <div class="storage_item item__name">
+            <div class="storage_item item__name" v-if="material.count > 0">
                 <reusable-text class="container_item">{{material.name }}</reusable-text>
             </div>
-            <div class="storage_item item__count">
+            <div class="storage_item item__count" v-if="material.count > 0">
                 <reusable-text class="container_item">{{ material.count }}</reusable-text>
             </div>
-            <div class="storage_item item__weight">
+            <div class="storage_item item__weight" v-if="material.count > 0">
                 <reusable-text class="container_item">{{material.count * material.weight }}</reusable-text>
             </div>
         </div>
