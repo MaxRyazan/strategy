@@ -3,6 +3,10 @@
         <reusable-button @push="isPlanetListOpen=true" style=" width: 75px;" v-if="!isPlanetListOpen">+</reusable-button>
         <reusable-button @push="isPlanetListOpen=false" style=" width: 75px;" v-else>-</reusable-button>
         <reusable-button @push="$emit('openScience')">Исследования</reusable-button>
+        <div class="current_research">
+            <reusable-text v-if="playerStore.player.account.currentInResearch">{{playerStore.player.account.currentInResearch.name}}</reusable-text>
+            <reusable-text v-if="playerStore.player.account.currentInResearch">{{playerStore.player.account.currentInResearch.lvl}}</reusable-text>
+        </div>
     </div>
     <div class="player_colonies" v-if="isPlanetListOpen">
         <reusable-button style="width: 100%;" @push="$emit('openPlanet', player?.account.homePlanet)">{{player?.account.homePlanet.name}}</reusable-button>
@@ -18,8 +22,9 @@ import {onMounted, Ref, ref} from "vue";
 import {Player} from "@/typescript/classes/Player.ts";
 import {Planet} from "@/typescript/classes/Planet.ts";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
+import ReusableText from "@/components/reusable/text/ReusableTextForDescription.vue";
 
-const playerStore: any = usePlayerStore()
+const playerStore: { player: Player} = usePlayerStore()
 const player: Ref<Player> = ref() as Ref<Player>
 const isPlanetListOpen = ref(false)
 onMounted(() => {
@@ -45,5 +50,14 @@ defineEmits<{
   display: flex;
   gap: 5px;
   padding: 2px;
+}
+.current_research{
+  width: 300px;
+  border: 1px solid white;
+  color: white;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 5px;
+  cursor: default;
 }
 </style>

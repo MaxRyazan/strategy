@@ -2,6 +2,8 @@
 import {ScienceInterface} from "@/typescript/classes/interfaces_for_classes/ScienceInterface.ts";
 import ReusableText from "@/components/reusable/text/ReusableTextForDescription.vue";
 import {usePlayerStore} from "@/pinia/playerStore.ts";
+import {computed} from "vue";
+import {SCIENCE_COEFFICIENT} from "@/constants.ts";
 
 const props = defineProps<{
     science: ScienceInterface
@@ -9,9 +11,22 @@ const props = defineProps<{
 const playerStore = usePlayerStore()
 
 const getCurrLvlOfScience: ScienceInterface = playerStore.player.account.science.find((sc: ScienceInterface) => sc.id === props.science.id)
+const currPlayerSP = computed(() => playerStore.player.account.SP)
 
+
+function calcPrice(lvl: number){
+    return 20 + 30 * (lvl * (1 + SCIENCE_COEFFICIENT))
+}
 function addScienceToResearch(){
-
+    playerStore.player.account.currentInResearch = {
+        id: props.science.id,
+        name: props.science.name,
+        lvl: props.science.lvl + 1,
+        category: props.science.category,
+        bonus: props.science.bonus,
+        price: calcPrice(props.science.lvl)
+    }
+    console.log(playerStore.player.account.currentInResearch)
 }
 </script>
 
@@ -33,7 +48,10 @@ function addScienceToResearch(){
                     <reusable-text> {{ props.science.bonus.bonusValuePerLvl * (getCurrLvlOfScience ? getCurrLvlOfScience?.lvl : 0) }} %</reusable-text>
                 </div>
             </div>
-            <img @click="addScienceToResearch" style="margin-left: 30px; cursor: pointer" src="@/images/icons/greenArrowToTop.png" alt="icon">
+            <img @click="addScienceToResearch" style="margin-left: 30px; cursor: pointer"
+                 src="@/images/icons/greenArrowToTop.png" alt="icon"
+                 :title="`Длительность исследования след уровня: ${currPlayerSP / props.science.price}`"
+            >
         </div>
     </div>
 </template>

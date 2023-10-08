@@ -5,4 +5,6 @@ export class Account {
     homePlanet: Planet = {} as any
     colonies: Planet[] = []
     science: ScienceInterface[] = []
+    SP: number = 10
+    currentInResearch: any = {}
 }

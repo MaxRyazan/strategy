@@ -6,4 +6,5 @@ export interface ScienceInterface {
     lvl: number
     category: ScienceCategory
     bonus: { bonusType: Bonuses, bonusValuePerLvl: number}
+    price: number
 }
