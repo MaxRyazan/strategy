@@ -19,7 +19,8 @@ onMounted(() => {
     if(Date.now() > props.item.willReadyAt) {
         isComplete.value = true
         deleteFromQueue()
-        addToPlanetBuildings()
+        if(!props.item.forDestroy) addToPlanetBuildings()
+        else deleteBuilding()
         return
     }
     readyIn.value = new Date(props.item.willReadyAt - Date.now())
