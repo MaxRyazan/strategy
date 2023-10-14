@@ -19,7 +19,11 @@ onMounted(() => {
     planet.buildings.push(colony)
     planet.storage.push(constrMaterial)
     planet.storage.push(electronic)
-    playerStore.player = new Player(1, 'shooter', {homePlanet: planet, colonies: [planet2, planet3], science: [new FasterBuildingConstruct(5)], SP: 100})
+    playerStore.player = new Player(
+        1,
+        'shooter',
+        {homePlanet: planet, colonies: [planet2, planet3], science: [new FasterBuildingConstruct(5)], SP: 100, currentInResearch: null, bonuses: []}
+    )
 })
 </script>
 
