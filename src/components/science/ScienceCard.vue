@@ -4,14 +4,15 @@ import ReusableText from "@/components/reusable/text/ReusableTextForDescription.
 import {usePlayerStore} from "@/pinia/playerStore.ts";
 import {computed} from "vue";
 import {SCIENCE_COEFFICIENT} from "@/constants.ts";
+import {Player} from "@/typescript/classes/Player.ts";
 
 const props = defineProps<{
     science: ScienceInterface
 }>()
-const playerStore = usePlayerStore()
+const playerStore: {player: Player} = usePlayerStore()
 
-const getCurrLvlOfScience: ScienceInterface = playerStore.player.account.science.find((sc: ScienceInterface) => sc.id === props.science.id)
-const currPlayerSP = computed(() => playerStore.player.account.SP)
+const getCurrLvlOfScience: ScienceInterface = playerStore.player.account.science.find((sc: ScienceInterface) => sc.id === props.science.id) as ScienceInterface
+const currPlayerSPPerSec = computed(() => playerStore.player.account.SP / 3600)
 
 
 function calcPrice(lvl: number){
@@ -19,14 +20,28 @@ function calcPrice(lvl: number){
 }
 function addScienceToResearch(){
     playerStore.player.account.currentInResearch = {
-        id: props.science.id,
-        name: props.science.name,
-        lvl: props.science.lvl + 1,
-        category: props.science.category,
-        bonus: props.science.bonus,
-        price: calcPrice(props.science.lvl)
+        timeWhenReady: Date.now() + (calcPrice(props.science.lvl) / currPlayerSPPerSec.value) * 1000,
+        science: {
+            id: props.science.id,
+            name: props.science.name,
+            lvl: props.science.lvl + 1,
+            category: props.science.category,
+            bonus: props.science.bonus,
+            price: calcPrice(props.science.lvl)
+        }
     }
-    console.log(playerStore.player.account.currentInResearch)
+    console.log(new Date(playerStore.player.account.currentInResearch.timeWhenReady))
+}
+
+function normalizeTimePeriod() {
+    const qq =  props.science.price / currPlayerSPPerSec.value
+    let hours = 0;
+    let minutes = Math.floor(qq * 60)
+    if(minutes > 60) {
+        hours = Math.floor(minutes / 60)
+        minutes = Math.floor(minutes - hours * 60)
+    }
+    return `${hours}:${minutes<10?'0'+minutes:minutes}`
 }
 </script>
 
@@ -50,7 +65,7 @@ function addScienceToResearch(){
             </div>
             <img @click="addScienceToResearch" style="margin-left: 30px; cursor: pointer"
                  src="@/images/icons/greenArrowToTop.png" alt="icon"
-                 :title="`Длительность исследования след уровня: ${currPlayerSP / props.science.price}`"
+                 :title="`Длительность исследования след уровня: ${normalizeTimePeriod()}`"
             >
         </div>
     </div>
