@@ -6,12 +6,13 @@
         <reusable-button @push="$emit('openScience')">Исследования</reusable-button>
         <div class="current_research">
             <reusable-text v-if="playerStore.player.account.currentInResearch">
-                {{ playerStore.player.account.currentInResearch.science.name }}
+                {{ playerStore.player.account.currentInResearch.science?.name }}
             </reusable-text>
             <reusable-text v-if="playerStore.player.account.currentInResearch">
-                {{ playerStore.player.account.currentInResearch.science.lvl }}
+                {{ playerStore.player.account.currentInResearch.science?.lvl }}
             </reusable-text>
             <reusable-text v-if="playerStore.player.account.currentInResearch">{{ timer }}</reusable-text>
+            <reusable-button close_btn @push="cancelResearch"/>
         </div>
     </div>
     <div class="player_colonies" v-if="isPlanetListOpen">
@@ -54,30 +55,34 @@ defineEmits<{
 function timeToResearchReady() {
     if (!playerStore.player.account.currentInResearch) return
     const now = Date.now()
-    const sub = playerStore.player.account.currentInResearch.timeWhenReady - now
-    if (sub <= 0) {
-        clearInterval(interval)
-        //TODO добавить логику добавления техи в исследованные
+    let sub = 0
+    if(playerStore.player.account.currentInResearch.timeWhenReady) {
+        sub = playerStore.player.account.currentInResearch.timeWhenReady - now
+        if (!sub || sub <= 0) {
+            clearInterval(interval)
+            //TODO добавить логику добавления техи в исследованные
+        }
+        let hours = 0;
+        let minutes: any = 0;
+        let seconds: any = 0;
+        seconds = Math.floor(sub / 1000)
+        if (seconds > 60) {
+            minutes = Math.floor(seconds / 60)
+            seconds = seconds - minutes * 60
+        }
+        if (minutes > 60) {
+            hours = Math.floor(minutes / 60)
+            minutes = minutes - hours * 60
+        }
+        if (seconds < 10) seconds = '0' + seconds
+        if (minutes < 10) minutes = '0' + minutes
+        return `${hours}:${minutes}:${seconds}`
     }
-    let hours = 0;
-    let minutes: any = 0;
-    let seconds: any;
-    seconds = Math.floor(sub / 1000)
-    if (seconds > 60) {
-        minutes = Math.floor(seconds / 60)
-        seconds = seconds - minutes * 60
-    }
-    if (minutes > 60) {
-        hours = Math.floor(minutes / 60)
-        minutes = minutes - hours * 60
-    }
-    if (seconds < 10) seconds = '0' + seconds
-    if (minutes < 10) minutes = '0' + minutes
-
-    console.log(`${hours}:${minutes}:${seconds}`)
-    return `${hours}:${minutes}:${seconds}`
 }
 
+function cancelResearch(){
+    playerStore.player.account.currentInResearch = {}
+}
 
 </script>
 <style lang="scss" scoped>
@@ -99,6 +104,7 @@ function timeToResearchReady() {
 }
 
 .current_research {
+  position: relative;
   width: 300px;
   border: 1px solid white;
   color: white;

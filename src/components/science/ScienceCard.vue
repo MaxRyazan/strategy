@@ -5,6 +5,7 @@ import {usePlayerStore} from "@/pinia/playerStore.ts";
 import {computed} from "vue";
 import {SCIENCE_COEFFICIENT} from "@/constants.ts";
 import {Player} from "@/typescript/classes/Player.ts";
+import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 
 const props = defineProps<{
     science: ScienceInterface
@@ -19,18 +20,18 @@ function calcPrice(lvl: number){
     return 20 + 30 * (lvl * (1 + SCIENCE_COEFFICIENT))
 }
 function addScienceToResearch(){
+    if(playerStore.player.account.currentInResearch) return
     playerStore.player.account.currentInResearch = {
-        timeWhenReady: Date.now() + (calcPrice(props.science.lvl) / currPlayerSPPerSec.value) * 1000,
+        timeWhenReady: Date.now() + (calcPrice(getCurrLvlOfScience.lvl + 1) / currPlayerSPPerSec.value) * 1000,
         science: {
             id: props.science.id,
             name: props.science.name,
-            lvl: props.science.lvl + 1,
+            lvl: getCurrLvlOfScience.lvl + 1,
             category: props.science.category,
             bonus: props.science.bonus,
             price: calcPrice(props.science.lvl)
         }
     }
-    console.log(new Date(playerStore.player.account.currentInResearch.timeWhenReady))
 }
 
 function normalizeTimePeriod() {
@@ -43,6 +44,8 @@ function normalizeTimePeriod() {
     }
     return `${hours}:${minutes<10?'0'+minutes:minutes}`
 }
+
+
 </script>
 
 <template>
@@ -79,6 +82,7 @@ function normalizeTimePeriod() {
   color: white;
   text-align: center;
   padding: 0 3px;
+  position: relative;
 }
 
 .bonus__info {
