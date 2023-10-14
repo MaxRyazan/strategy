@@ -5,12 +5,11 @@ import {usePlayerStore} from "@/pinia/playerStore.ts";
 import {computed} from "vue";
 import {SCIENCE_COEFFICIENT} from "@/constants.ts";
 import {Player} from "@/typescript/classes/Player.ts";
-import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 
 const props = defineProps<{
     science: ScienceInterface
 }>()
-const playerStore: {player: Player} = usePlayerStore()
+const playerStore: {player: Player} = usePlayerStore() as any
 
 const getCurrLvlOfScience: ScienceInterface = playerStore.player.account.science.find((sc: ScienceInterface) => sc.id === props.science.id) as ScienceInterface
 const currPlayerSPPerSec = computed(() => playerStore.player.account.SP / 3600)
@@ -22,11 +21,11 @@ function calcPrice(lvl: number){
 function addScienceToResearch(){
     if(playerStore.player.account.currentInResearch) return
     playerStore.player.account.currentInResearch = {
-        timeWhenReady: Date.now() + (calcPrice(getCurrLvlOfScience.lvl + 1) / currPlayerSPPerSec.value) * 1000,
+        timeWhenReady: Date.now() + (calcPrice((getCurrLvlOfScience?.lvl?? 0) + 1) / currPlayerSPPerSec.value) * 1000,
         science: {
             id: props.science.id,
             name: props.science.name,
-            lvl: getCurrLvlOfScience.lvl + 1,
+            lvl: ((getCurrLvlOfScience?.lvl?? 0) + 1),
             category: props.science.category,
             bonus: props.science.bonus,
             price: calcPrice(props.science.lvl)
@@ -57,10 +56,10 @@ function normalizeTimePeriod() {
             <div class="bonus__info--item" title="Тек уровень исследования">
                 <img src="@/images/icons/currScienceLvl.png" alt="lvl">
                 <div class="card_name">
-                    <reusable-text>{{ getCurrLvlOfScience.lvl }}</reusable-text>
+                    <reusable-text>{{ getCurrLvlOfScience?.lvl }}</reusable-text>
                 </div>
             </div>
-            <div class="bonus__info--item" title="Тек размер бонуса">
+            <div class="bonus__info--item" title="Тек размер бонуса" v-if="props.science.bonus">
                 <img src="@/images/icons/bonusIcon.png" alt="bonus">
                 <div class="card_name">
                     <reusable-text> {{ props.science.bonus.bonusValuePerLvl * (getCurrLvlOfScience ? getCurrLvlOfScience?.lvl : 0) }} %</reusable-text>

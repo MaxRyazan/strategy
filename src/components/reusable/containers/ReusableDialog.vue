@@ -61,7 +61,7 @@ function mousedown(mdEvent: MouseEvent) {
 </script>
 
 <template>
-    <Dialog :header="props.header ?? ''" class="for_resize" v-model:visible="props.visible" :closable="false" :blockScroll="true" draggable style="position: relative">
+    <Dialog :header="props.header ?? ''" class="for_resize" v-model:visible="props.visible" :closable="false" :blockScroll="true" draggable style="position: relative;background-color: black;">
         <reusable-button close_btn @push="$emit('closeDialog')"/>
         <slot />
         <div class="planet_resize"></div>

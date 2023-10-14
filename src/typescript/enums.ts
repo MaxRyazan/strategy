@@ -1,3 +1,4 @@
+
 export enum BuildingCategory {
     ADMINISTRATIVE = 'ADMINISTRATIVE',
     MANUFACTURER = 'MANUFACTURER',
@@ -7,7 +8,8 @@ export enum BuildingCategory {
 }
 
 export enum ScienceCategory {
-    ECONOMIC= 'Экономика'
+    ECONOMIC= 'Экономика',
+    ShipBuilding='Кораблестроение'
 }
 
 export enum TopMenu {
@@ -30,7 +32,8 @@ export enum Materials {
 }
 
 export enum Science {
-    Faster_Building_Construct = 'Ускорение строительства зданий'
+    Faster_Building_Construct = 'Ускорение строительства зданий',
+    ShipBuilding = 'Кораблестроение'
 }
 
 export enum StorageEntitiesCategory {
