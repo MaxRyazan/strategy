@@ -46,6 +46,7 @@
                 <div class="controls">
                     <reusable-button @push="currentView=TopMenu.GROUND" :class="{'activeButton': currentView===TopMenu.GROUND}">Поверхность</reusable-button>
                     <reusable-button @push="currentView=TopMenu.ORBIT" :class="{'activeButton': currentView===TopMenu.ORBIT}">Орбита</reusable-button>
+                    <reusable-button @push="currentView=TopMenu.SPACEYARD" :class="{'activeButton': currentView===TopMenu.SPACEYARD}">Космическая верфь</reusable-button>
                 </div>
                 <div class="right__ground" v-if="currentView===TopMenu.GROUND">
                     <div class="controls">
@@ -81,7 +82,10 @@
                     </div>
                 </div>
                 <div class="right__orbit" v-if="currentView===TopMenu.ORBIT">
-                    111111
+                    <div class="building_component_wrapper">
+                        <div class="in_build">11</div>
+                        <div class="buildings">11</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,7 +172,8 @@ function showCategory(category: BuildingCategory){
 </script>
 
 <style lang="scss" scoped>
-.right__ground{
+.right__ground,
+.right__orbit{
   height: calc(100% - 28px);
 }
 .activeButton{

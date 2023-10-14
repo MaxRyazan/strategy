@@ -15,7 +15,8 @@ export enum TopMenu {
     STORAGE = 'Склад',
     INFO = 'Информация',
     GROUND = 'Поверхность',
-    ORBIT = 'Орбита'
+    ORBIT = 'Орбита',
+    SPACEYARD = 'Космическая верфь'
 }
 
 export enum Buildings {
