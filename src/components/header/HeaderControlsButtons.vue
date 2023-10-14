@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import {usePlayerStore} from "@/pinia/playerStore.ts";
-import {onMounted, onUnmounted, Ref, ref} from "vue";
+import {computed, onMounted, onUnmounted, Ref, ref, watch} from "vue";
 import {Player} from "@/typescript/classes/Player.ts";
 import {Planet} from "@/typescript/classes/Planet.ts";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
@@ -45,9 +45,6 @@ let timer = ref()
 
 onMounted(() => {
     player.value = playerStore.player
-    interval = setInterval(() => {
-        timer.value = timeToResearchReady()
-    }, 1000)
 })
 onUnmounted(() => clearInterval(interval))
 defineEmits<{
@@ -63,7 +60,10 @@ function timeToResearchReady() {
         sub = playerStore.player.account.currentInResearch.timeWhenReady - now
         if (!sub || sub <= 0) {
             clearInterval(interval)
-            //TODO добавить логику добавления техи в исследованные
+            const tech = playerStore.player.account.science.find(sc => sc.id === playerStore.player.account.currentInResearch.science.id)
+            if(!tech) playerStore.player.account.science.push(playerStore.player.account.currentInResearch.science)
+            else tech.lvl = playerStore.player.account.currentInResearch.science.lvl
+            cancelResearch()
         }
         let hours = 0;
         let minutes: any = 0;
@@ -86,6 +86,14 @@ function timeToResearchReady() {
 function cancelResearch() {
     playerStore.player.account.currentInResearch = null
 }
+
+watch(computed(() => playerStore.player.account.currentInResearch),(value) => {
+    if(value) {
+        interval = setInterval(() => {
+            timer.value = timeToResearchReady()
+        }, 1000)
+    }
+}, {immediate: true})
 
 </script>
 <style lang="scss" scoped>
