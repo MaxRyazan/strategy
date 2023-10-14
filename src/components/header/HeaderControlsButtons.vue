@@ -60,7 +60,7 @@ function timeToResearchReady() {
         sub = playerStore.player.account.currentInResearch.timeWhenReady - now
         if (!sub || sub <= 0) {
             clearInterval(interval)
-            const tech = playerStore.player.account.science.find(sc => sc.id === playerStore.player.account.currentInResearch.science.id)
+            const tech = playerStore.player.account.science.find(sc => sc.id === playerStore.player.account.currentInResearch?.science.id)
             if(!tech) playerStore.player.account.science.push(playerStore.player.account.currentInResearch.science)
             else tech.lvl = playerStore.player.account.currentInResearch.science.lvl
             cancelResearch()

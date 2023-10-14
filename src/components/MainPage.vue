@@ -11,14 +11,13 @@ import ScienceComponent from "@/components/science/ScienceComponent.vue";
 
 const isPlanetVisible = ref(false)
 const planetStore = usePlanetStore()
-const playerStore:{ player: Player } = usePlayerStore()
+const playerStore:{player: Player} = usePlayerStore() as any
 const player = ref() as Ref<Player>
 const isScienceVisible = ref(false)
 
 
 onMounted(() => {
     player.value = playerStore.player
-    calculateBonuses()
 })
 function showSelectedPlanet(planet: Planet){
     isPlanetVisible.value = !isPlanetVisible.value
@@ -26,8 +25,9 @@ function showSelectedPlanet(planet: Planet){
 }
 
 watch(computed(() => playerStore.player.account.science), () => {
+    console.log('Посчитали бонусы')
     calculateBonuses()
-}, {deep: true})
+}, {deep: true, immediate: true})
 
 function calculateBonuses(){
     playerStore.player.account.science.forEach(tech => {
