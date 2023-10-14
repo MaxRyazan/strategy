@@ -4,15 +4,18 @@
         </reusable-button>
         <reusable-button @push="isPlanetListOpen=false" style=" width: 75px;" v-else>-</reusable-button>
         <reusable-button @push="$emit('openScience')">Исследования</reusable-button>
-        <div class="current_research">
+        <div class="current_research" v-if="playerStore.player.account.currentInResearch">
             <reusable-text v-if="playerStore.player.account.currentInResearch">
                 {{ playerStore.player.account.currentInResearch.science?.name }}
             </reusable-text>
-            <reusable-text v-if="playerStore.player.account.currentInResearch">
-                {{ playerStore.player.account.currentInResearch.science?.lvl }}
+            <reusable-text style="margin-right: 30px;" v-if="playerStore.player.account.currentInResearch">
+                ур. {{ playerStore.player.account.currentInResearch.science?.lvl }}
             </reusable-text>
             <reusable-text v-if="playerStore.player.account.currentInResearch">{{ timer }}</reusable-text>
             <reusable-button close_btn @push="cancelResearch"/>
+        </div>
+        <div class="current_research" v-else>
+            <reusable-text>Нет исследований</reusable-text>
         </div>
     </div>
     <div class="player_colonies" v-if="isPlanetListOpen">
@@ -56,7 +59,7 @@ function timeToResearchReady() {
     if (!playerStore.player.account.currentInResearch) return
     const now = Date.now()
     let sub = 0
-    if(playerStore.player.account.currentInResearch.timeWhenReady) {
+    if (playerStore.player.account.currentInResearch.timeWhenReady) {
         sub = playerStore.player.account.currentInResearch.timeWhenReady - now
         if (!sub || sub <= 0) {
             clearInterval(interval)
@@ -80,8 +83,8 @@ function timeToResearchReady() {
     }
 }
 
-function cancelResearch(){
-    playerStore.player.account.currentInResearch = {}
+function cancelResearch() {
+    playerStore.player.account.currentInResearch = null
 }
 
 </script>
@@ -104,8 +107,9 @@ function cancelResearch(){
 }
 
 .current_research {
+  min-width: 300px;
   position: relative;
-  width: 300px;
+  padding: 1px 40px;
   border: 1px solid white;
   color: white;
   display: flex;
