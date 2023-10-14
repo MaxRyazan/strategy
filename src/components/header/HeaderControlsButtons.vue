@@ -37,7 +37,7 @@ import {Planet} from "@/typescript/classes/Planet.ts";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 import ReusableText from "@/components/reusable/text/ReusableTextForDescription.vue";
 
-const playerStore: { player: Player } = usePlayerStore()
+const playerStore: { player: Player } = usePlayerStore() as any
 const player: Ref<Player> = ref() as Ref<Player>
 const isPlanetListOpen = ref(false)
 let interval: any;

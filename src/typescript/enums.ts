@@ -12,7 +12,10 @@ export enum ScienceCategory {
 
 export enum TopMenu {
     BUILDING = 'Строительство',
-    STORAGE = 'Склад'
+    STORAGE = 'Склад',
+    INFO = 'Информация',
+    GROUND = 'Поверхность',
+    ORBIT = 'Орбита'
 }
 
 export enum Buildings {

@@ -44,34 +44,44 @@
             </div>
             <div class="right">
                 <div class="controls">
-                    <reusable-button @push="currentTopMenuTab=TopMenu.BUILDING" :class="{'activeButton': currentTopMenuTab===TopMenu.BUILDING}">Строительство</reusable-button>
-                    <reusable-button @push="currentTopMenuTab=TopMenu.STORAGE" :class="{'activeButton': currentTopMenuTab===TopMenu.STORAGE}">Склад</reusable-button>
+                    <reusable-button @push="currentView=TopMenu.GROUND" :class="{'activeButton': currentView===TopMenu.GROUND}">Поверхность</reusable-button>
+                    <reusable-button @push="currentView=TopMenu.ORBIT" :class="{'activeButton': currentView===TopMenu.ORBIT}">Орбита</reusable-button>
                 </div>
-                <div class="building_component_wrapper" v-if="currentTopMenuTab === TopMenu.BUILDING">
-                    <div class="in_build">
-                        <in-construct v-for="item in planetStore.selectedPlanet.buildingsInConstruct" :key="item.id" :item="item"/>
+                <div class="right__ground" v-if="currentView===TopMenu.GROUND">
+                    <div class="controls">
+                        <reusable-button @push="currentTopMenuTab=TopMenu.BUILDING" :class="{'activeButton': currentTopMenuTab===TopMenu.BUILDING}">Строительство</reusable-button>
+                        <reusable-button @push="currentTopMenuTab=TopMenu.STORAGE" :class="{'activeButton': currentTopMenuTab===TopMenu.STORAGE}">Склад</reusable-button>
+                        <reusable-button @push="currentTopMenuTab=TopMenu.INFO" :class="{'activeButton': currentTopMenuTab===TopMenu.INFO}">Информация</reusable-button>
                     </div>
-                    <div class="buildings">
-                        <div class="buildings_nav">
-                            <reusable-button @push="showCategory(BuildingCategory.ADMINISTRATIVE)"
-                                             :class="{'activeButton': currentBuildingTab===BuildingCategory.ADMINISTRATIVE}">Административные</reusable-button>
-                            <reusable-button @push="showCategory(BuildingCategory.MANUFACTURER)"
-                                             :class="{'activeButton': currentBuildingTab===BuildingCategory.MANUFACTURER}">Производственные</reusable-button>
-                            <reusable-button @push="showCategory(BuildingCategory.ENERGETIC)"
-                                             :class="{'activeButton': currentBuildingTab===BuildingCategory.ENERGETIC}">Энергетические</reusable-button>
-                            <reusable-button @push="showCategory(BuildingCategory.SCIENCES)"
-                                             :class="{'activeButton': currentBuildingTab===BuildingCategory.SCIENCES}">Научные</reusable-button>
-                            <reusable-button @push="showCategory(BuildingCategory.SPECIAL)"
-                                             :class="{'activeButton': currentBuildingTab===BuildingCategory.SPECIAL}">Специальные</reusable-button>
+                    <div class="building_component_wrapper" v-if="currentTopMenuTab === TopMenu.BUILDING">
+                        <div class="in_build">
+                            <in-construct v-for="item in planetStore.selectedPlanet.buildingsInConstruct" :key="item.id" :item="item"/>
                         </div>
-                        <component :is="currentComponent" />
-                    </div>
+                        <div class="buildings">
+                            <div class="buildings_nav">
+                                <reusable-button @push="showCategory(BuildingCategory.ADMINISTRATIVE)"
+                                                 :class="{'activeButton': currentBuildingTab===BuildingCategory.ADMINISTRATIVE}">Административные</reusable-button>
+                                <reusable-button @push="showCategory(BuildingCategory.MANUFACTURER)"
+                                                 :class="{'activeButton': currentBuildingTab===BuildingCategory.MANUFACTURER}">Производственные</reusable-button>
+                                <reusable-button @push="showCategory(BuildingCategory.ENERGETIC)"
+                                                 :class="{'activeButton': currentBuildingTab===BuildingCategory.ENERGETIC}">Энергетические</reusable-button>
+                                <reusable-button @push="showCategory(BuildingCategory.SCIENCES)"
+                                                 :class="{'activeButton': currentBuildingTab===BuildingCategory.SCIENCES}">Научные</reusable-button>
+                                <reusable-button @push="showCategory(BuildingCategory.SPECIAL)"
+                                                 :class="{'activeButton': currentBuildingTab===BuildingCategory.SPECIAL}">Специальные</reusable-button>
+                            </div>
+                            <component :is="currentComponent" />
+                        </div>
 
+                    </div>
+                    <div class="storage_component_wrapper storage" v-if="currentTopMenuTab === TopMenu.STORAGE">
+                        <storage-resources-view :resources="filteredResources"/>
+                        <storage-materials-view :materials="filteredMaterials"/>
+                        <storage-modules-view :modules="filteredModules"/>
+                    </div>
                 </div>
-                <div class="storage_component_wrapper storage" v-if="currentTopMenuTab === TopMenu.STORAGE">
-                    <storage-resources-view :resources="filteredResources"/>
-                    <storage-materials-view :materials="filteredMaterials"/>
-                    <storage-modules-view :modules="filteredModules"/>
+                <div class="right__orbit" v-if="currentView===TopMenu.ORBIT">
+                    111111
                 </div>
             </div>
         </div>
@@ -106,6 +116,7 @@ defineEmits<{
 
 const currentBuildingTab = ref(BuildingCategory.ADMINISTRATIVE)
 const currentTopMenuTab = ref(TopMenu.BUILDING)
+const currentView = ref(TopMenu.GROUND)
 const currentComponent = shallowRef(AdministrativeBuildings)
 const planetStore = usePlanetStore()
 const someValue = ref(0)
@@ -157,6 +168,9 @@ function showCategory(category: BuildingCategory){
 </script>
 
 <style lang="scss" scoped>
+.right__ground{
+  height: calc(100% - 28px);
+}
 .activeButton{
   color: darkorange;
 }
