@@ -1,7 +1,21 @@
-import {ModuleCategory} from "@/typescript/enums.ts";
+import {EngineTypes, FuelTypes, ModuleCategory, Modules} from "@/typescript/enums.ts";
 
 export interface ModuleInterface {
-    id: number
-    img: string
-    category: ModuleCategory
+    readonly id: number;
+    readonly name: Modules
+    readonly category: ModuleCategory;
+    readonly engineType: EngineTypes;
+    readonly img: string
+
+    readonly hyperPower: number
+    readonly normalPower: number
+    readonly fightPower: number
+    readonly weight: number
+    readonly signature: number
+    readonly crew: number
+    readonly energy: number
+    readonly fuel: {
+        type: FuelTypes,
+        amountPerMinute: number
+    }
 }

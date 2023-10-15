@@ -1,6 +1,7 @@
 import {ShipInterface} from "@/typescript/classes/interfaces_for_classes/ShipInterface.ts";
 import {Ships, ShipsCategory} from "@/typescript/enums.ts";
 import {ShipSlots} from "@/typescript/types.ts";
+import {ModuleInterface} from "@/typescript/classes/interfaces_for_classes/ModuleInterface.ts";
 
 export class Fighter implements ShipInterface {
     constructor() {
@@ -13,6 +14,7 @@ export class Fighter implements ShipInterface {
             weapon: 2,
             armor: 2
         }
+        this.modules = []
         this.img = 'src/images/ships/fighter.png'
         this.health = 100
         this.weight = 100
@@ -24,6 +26,7 @@ export class Fighter implements ShipInterface {
     readonly name: Ships
     readonly category: ShipsCategory;
     readonly slots: ShipSlots
+    readonly modules: Array<ModuleInterface>
     readonly img: string
 
     readonly health: number
