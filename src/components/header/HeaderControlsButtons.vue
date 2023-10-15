@@ -4,6 +4,7 @@
         </reusable-button>
         <reusable-button @push="isPlanetListOpen=false" style=" width: 75px;" v-else>-</reusable-button>
         <reusable-button @push="$emit('openScience')">Исследования</reusable-button>
+        <reusable-button @push="$emit('openShipConstructor')">Бюро проектирования кораблей</reusable-button>
         <div class="current_research" v-if="playerStore.player.account.currentInResearch">
             <reusable-text v-if="playerStore.player.account.currentInResearch">
                 {{ playerStore.player.account.currentInResearch.science?.name }}
@@ -50,6 +51,7 @@ onUnmounted(() => clearInterval(interval))
 defineEmits<{
     (e: 'openPlanet', planet: Planet): void
     (e: 'openScience'): void
+    (e: 'openShipConstructor'): void
 }>()
 
 function timeToResearchReady() {

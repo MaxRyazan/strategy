@@ -45,3 +45,11 @@ export enum StorageEntitiesCategory {
 export enum Bonuses {
     Faster_Building_Construct = 'Ускорение строительства зданий'
 }
+
+export enum Ships {
+    Fighter='Истребитель'
+}
+
+export enum ShipsCategory {
+    MILITARY='Боевые'
+}

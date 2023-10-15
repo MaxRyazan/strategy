@@ -7,6 +7,7 @@ import {usePlayerStore} from "@/pinia/playerStore.ts";
 import {Player} from "@/typescript/classes/Player.ts";
 import {Planet} from "@/typescript/classes/Planet.ts";
 import ScienceComponent from "@/components/science/ScienceComponent.vue";
+import ShipConstructorComponent from "@/components/ships/ShipConstructorComponent.vue";
 
 
 const isPlanetVisible = ref(false)
@@ -14,6 +15,7 @@ const planetStore = usePlanetStore()
 const playerStore:{player: Player} = usePlayerStore() as any
 const player = ref() as Ref<Player>
 const isScienceVisible = ref(false)
+const isShipConstructorVisible = ref(false)
 
 
 onMounted(() => {
@@ -45,9 +47,11 @@ function calculateBonuses(){
     <div class="main_wrapper">
         <header-controls-buttons
                 @open-science="isScienceVisible=!isScienceVisible"
-                @openPlanet="showSelectedPlanet"/>
+                @open-planet="showSelectedPlanet"
+                @open-ship-constructor="isShipConstructorVisible = !isShipConstructorVisible"/>
         <planet-component @close="isPlanetVisible=false" :is-planet-visible="isPlanetVisible" v-if="isPlanetVisible"/>
         <science-component @close="isScienceVisible=false" :is-science-visible="isScienceVisible" v-if="isScienceVisible"/>
+        <ship-constructor-component @close="isShipConstructorVisible=false" :is-ship-constructor-visible="isShipConstructorVisible"  v-if="isShipConstructorVisible" />
     </div>
 </template>
 

@@ -18,3 +18,11 @@ export interface BONUS_VALUE {
     bonusType: Bonuses,
     size: number
 }
+
+export interface ShipSlots{
+    engines: number,
+    modules: number,
+    weapon: number,
+    armor: number,
+    special?: number
+}
