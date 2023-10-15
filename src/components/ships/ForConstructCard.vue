@@ -76,20 +76,36 @@ const props = defineProps<{
 .slot{
   width: 50px;
   height: 50px;
+  cursor: default;
   &__engine{
-   border: 1px solid rgba(255, 165, 0, .3)
+   border: 1px solid rgba(255, 165, 0, .3);
+    &:hover {
+      border: 1px solid rgba(255, 165, 0, .7);
+    }
   }
   &__module{
-   border: 1px solid rgba(83, 189, 0, .3)
+   border: 1px solid rgba(83, 189, 0, .3);
+    &:hover {
+      border: 1px solid rgba(83, 189, 0, .7);
+    }
   }
   &__special{
-   border: 1px solid rgba(255, 255, 255, .3)
+   border: 1px solid rgba(255, 255, 255, .3);
+    &:hover {
+      border: 1px solid rgba(255, 255, 255, .7);
+    }
   }
   &__weapon{
-   border: 1px solid rgba(135, 1, 1, .3)
+   border: 1px solid rgba(135, 1, 1, .3);
+    &:hover {
+      border: 1px solid rgba(135, 1, 1, .7);
+    }
   }
   &__armor{
-   border: 1px solid rgba(0, 49, 143, .5)
+   border: 1px solid rgba(0, 49, 143, .5);
+    &:hover {
+      border: 1px solid rgba(0, 49, 143, .8);
+    }
   }
 }
 </style>
