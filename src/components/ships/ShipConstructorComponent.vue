@@ -11,11 +11,7 @@ import {EngineTypes, ModuleCategory} from "@/typescript/enums.ts";
 
 const chosenShipBody: Ref<ShipInterface> = ref(new Fighter())
 const freeSlots = ref(0)
-const enginesInProject = ref({
-    hyper: [] as ModuleInterface[],
-    nuclear: [] as ModuleInterface[],
-    reactive: [] as ModuleInterface[],
-})
+
 const props = defineProps<{
     isShipConstructorVisible: boolean
 }>()
@@ -78,29 +74,34 @@ const energy = computed(() => {
 
 //TODO двигатели в КБ
 const hyperSpeed = computed(() => {
-    const hyperEngines = enginesInProject.value.hyper
+    const hyperEngines = chosenShipBody.value.modules.filter((mod: ModuleInterface) => mod.engineType===EngineTypes.Hyper)
     return hyperEngines.length * 10
 })
 const normalSpeed = computed(() => {
-    const nuclearEngines = enginesInProject.value.nuclear
-    const reactiveEngines = enginesInProject.value.reactive
+    const nuclearEngines = chosenShipBody.value.modules.filter((mod: ModuleInterface) => mod.engineType===EngineTypes.Nuclear)
+    const reactiveEngines = chosenShipBody.value.modules.filter((mod: ModuleInterface) => mod.engineType===EngineTypes.Reactive)
     return nuclearEngines.length * 10 + reactiveEngines.length * 3
 })
 const fightSpeed = computed(() => {
-    const nuclearEngines = enginesInProject.value.nuclear
-    const reactiveEngines = enginesInProject.value.reactive
+    const nuclearEngines = chosenShipBody.value.modules.filter((mod: ModuleInterface) => mod.engineType===EngineTypes.Nuclear)
+    const reactiveEngines = chosenShipBody.value.modules.filter((mod: ModuleInterface) => mod.engineType===EngineTypes.Reactive)
     return nuclearEngines.length * 0.1 + reactiveEngines.length * 0.03
 })
 
 function addModuleToProject(module: ModuleInterface){
     if(module.category === ModuleCategory.ENGINES) {
-        if(chosenShipBody.value.slots.engines > enginesInProject.value.hyper.length + enginesInProject.value.nuclear.length + enginesInProject.value.reactive.length) {
+        const engines = chosenShipBody.value.modules.filter((module: ModuleInterface) => module.category === ModuleCategory.ENGINES)
+        if(chosenShipBody.value.slots.engines > engines.length) {
             if(module.engineType === EngineTypes.Reactive) {
-                enginesInProject.value.reactive.push(module)
+                chosenShipBody.value.modules.push(module)
             }
         }
     }
 }
+
+
+const engines = computed(() => chosenShipBody.value.modules.filter((module: ModuleInterface) => module.category === ModuleCategory.ENGINES))
+
 </script>
 <template>
     <reusable-dialog  @closeDialog="$emit('close')" :visible="props.isShipConstructorVisible" header="Бюро проектировки кораблей" style="width: 80%; margin: 0 auto; height: 700px; position: relative">
@@ -115,8 +116,8 @@ function addModuleToProject(module: ModuleInterface){
                         <div class="ship__slots">
                             <div class="ship__slots_engines">
                                 <reusable-button @push="addSlot('engine')" class="add_slot_btn">+</reusable-button>
-                                <div @contextmenu.prevent="deleteSlot('engine')" class="slot slot__engine" v-for="engine in chosenShipBody.slots.engines" :key="engine">
-                                    {{engine}}
+                                <div @contextmenu.prevent="deleteSlot('engine')" class="slot slot__engine" v-for="(engine, idx) in chosenShipBody.slots.engines" :key="engine">
+                                    <img :src="`${engines[idx].img}`" alt="" v-if="engines.length>idx">
                                 </div>
                             </div>
                             <div class="ship__slots_modules">
@@ -290,10 +291,19 @@ function addModuleToProject(module: ModuleInterface){
   width: 100%;
 
 }
+.ship__module{
+  width: 100%;
+  display: flex;
+}
 .slot{
   width: 50px;
   height: 50px;
   cursor: default;
+  display: flex;
+  align-items: center;
+  & img {
+    width: 100%;
+  }
   &__engine{
    border: 1px solid rgba(255, 165, 0, .3);
     &:hover {
