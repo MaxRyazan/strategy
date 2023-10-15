@@ -5,6 +5,11 @@ import {computed, ref} from "vue";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 
 const freeSlots = ref(0)
+const enginesInProject = ref({
+    hyper: 0,
+    nuclear: 0,
+    reactive: 0,
+})
 const props = defineProps<{
     ship: ShipInterface
 }>()
@@ -64,6 +69,22 @@ const crew = computed(() => {
 const energy = computed(() => {
     return props.ship.energy
 })
+
+//TODO двигатели в КБ
+const hyperSpeed = computed(() => {
+    const hyperEngines = enginesInProject.value.hyper
+    return hyperEngines * 10
+})
+const normalSpeed = computed(() => {
+    const nuclearEngines = enginesInProject.value.nuclear
+    const reactiveEngines = enginesInProject.value.reactive
+    return nuclearEngines * 10 + reactiveEngines * 3
+})
+const fightSpeed = computed(() => {
+    const nuclearEngines = enginesInProject.value.nuclear
+    const reactiveEngines = enginesInProject.value.reactive
+    return nuclearEngines * 0.1 + reactiveEngines * 0.03
+})
 </script>
 <template>
     <div class="ship">
@@ -96,31 +117,64 @@ const energy = computed(() => {
             </div>
         </div>
         <div class="ship__params">
-            <div class="ship__params_item item">
-                <reusable-text>Прочность:</reusable-text>
-                <reusable-text>{{health}}</reusable-text>
+            <div class="base__params">
+                <div class="ship__params_item item">
+                    <reusable-text>Прочность:</reusable-text>
+                    <reusable-text>{{health}}</reusable-text>
+                </div>
+                <div class="ship__params_item item">
+                    <reusable-text>Масса:</reusable-text>
+                    <reusable-text>{{weight}}</reusable-text>
+                </div>
+                <div class="ship__params_item item">
+                    <reusable-text>Сигнатура:</reusable-text>
+                    <reusable-text>{{signature}}</reusable-text>
+                </div>
+                <div class="ship__params_item item">
+                    <reusable-text>Экипаж:</reusable-text>
+                    <reusable-text>{{crew}}</reusable-text>
+                </div>
+                <div class="ship__params_item item">
+                    <reusable-text>Энергия:</reusable-text>
+                    <reusable-text :class="{sub_zero:energy<0,below_zero:energy>0}">{{energy}}</reusable-text>
+                </div>
             </div>
-            <div class="ship__params_item item">
-                <reusable-text>Масса:</reusable-text>
-                <reusable-text>{{weight}}</reusable-text>
+            <div class="speed">
+                <reusable-text>Скоростные характеристики корабля:</reusable-text>
+                <div class="ship__params_item item">
+                    <reusable-text>Гиперпространство:</reusable-text>
+                    <reusable-text>{{hyperSpeed}}</reusable-text>
+                </div>
+                <div class="ship__params_item item">
+                    <reusable-text>Межзвёздная:</reusable-text>
+                    <reusable-text>{{normalSpeed}}</reusable-text>
+                </div>
+                <div class="ship__params_item item">
+                    <reusable-text>Сражение:</reusable-text>
+                    <reusable-text>{{fightSpeed}}</reusable-text>
+                </div>
             </div>
-            <div class="ship__params_item item">
-                <reusable-text>Сигнатура:</reusable-text>
-                <reusable-text>{{signature}}</reusable-text>
+            <div class="attack">
+                <reusable-text>Огневые возможности корабля:</reusable-text>
             </div>
-            <div class="ship__params_item item">
-                <reusable-text>Экипаж:</reusable-text>
-                <reusable-text>{{crew}}</reusable-text>
+            <div class="armor">
+                <reusable-text>Защитные возможности корабля:</reusable-text>
             </div>
-            <div class="ship__params_item item">
-                <reusable-text>Энергия:</reusable-text>
-                <reusable-text :class="{sub_zero:energy<0,below_zero:energy>0}">{{energy}}</reusable-text>
+            <div class="info">
+                <reusable-text>Прочая информация:</reusable-text>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
+.speed,
+.attack,
+.armor,
+.info {
+  margin-top: 20px;
+  border: 1px dotted rgba(255, 255, 255, 0.3)
+}
 .ship{
   display: flex;
   height: 100%;
