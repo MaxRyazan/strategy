@@ -1,9 +1,45 @@
 <script setup lang="ts">
 import {ShipInterface} from "@/typescript/classes/interfaces_for_classes/ShipInterface.ts";
+import ReusableText from "@/components/reusable/text/ReusableTextForDescription.vue";
+import {ref} from "vue";
+import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 
+const freeSlots = ref(0)
 const props = defineProps<{
     ship: ShipInterface
 }>()
+
+function deleteSlot(slotType: string){
+    freeSlots.value += 1
+    switch (slotType){
+        case 'engine': props.ship.slots.engines -= 1;
+        break
+        case 'module': props.ship.slots.modules -= 1;
+        break
+        case 'special': props.ship.slots.special -= 1;
+        break
+        case 'weapon': props.ship.slots.weapon -= 1;
+        break
+        case 'armor': props.ship.slots.armor -= 1;
+        break
+    }
+}
+function addSlot(slotType: string){
+    if(!freeSlots.value) return
+    freeSlots.value -= 1
+    switch (slotType){
+        case 'engine': props.ship.slots.engines += 1;
+        break
+        case 'module': props.ship.slots.modules += 1;
+        break
+        case 'special': props.ship.slots.special += 1;
+        break
+        case 'weapon': props.ship.slots.weapon += 1;
+        break
+        case 'armor': props.ship.slots.armor += 1;
+        break
+    }
+}
 </script>
 <template>
     <div class="ship">
@@ -11,21 +47,27 @@ const props = defineProps<{
             <div class="ship__img">
                 <img :src="props.ship.img" alt="">
             </div>
+            <reusable-text style="color: white" v-if="freeSlots">Свободных слотов: {{freeSlots}}</reusable-text>
             <div class="ship__slots">
                 <div class="ship__slots_engines">
-                    <div class="slot slot__engine" v-for="engine in props.ship.slots.engines"></div>
+                    <reusable-button @push="addSlot('engine')" class="add_slot_btn">+</reusable-button>
+                    <div @contextmenu.prevent="deleteSlot('engine')" class="slot slot__engine" v-for="engine in props.ship.slots.engines"></div>
                 </div>
                 <div class="ship__slots_modules">
-                    <div class="slot slot__module"  v-for="module in props.ship.slots.modules"></div>
+                    <reusable-button @push="addSlot('module')" class="add_slot_btn">+</reusable-button>
+                    <div @contextmenu.prevent="deleteSlot('module')" class="slot slot__module"  v-for="module in props.ship.slots.modules"></div>
                 </div>
                 <div class="ship__slots_special" v-if="props.ship.slots.special">
-                    <div class="slot slot__special" v-for="special in props.ship.slots.special"></div>
+                    <reusable-button @push="addSlot('special')" class="add_slot_btn">+</reusable-button>
+                    <div @contextmenu.prevent="deleteSlot('special')" class="slot slot__special" v-for="special in props.ship.slots.special"></div>
                 </div>
                 <div class="ship__slots_weapon">
-                    <div class="slot slot__weapon" v-for="weapon in props.ship.slots.weapon"></div>
+                    <reusable-button @push="addSlot('weapon')" class="add_slot_btn">+</reusable-button>
+                    <div @contextmenu.prevent="deleteSlot('weapon')" class="slot slot__weapon" v-for="weapon in props.ship.slots.weapon"></div>
                 </div>
                 <div class="ship__slots_armor">
-                    <div class="slot slot__armor" v-for="armor in props.ship.slots.armor"></div>
+                    <reusable-button @push="addSlot('armor')" class="add_slot_btn">+</reusable-button>
+                    <div @contextmenu.prevent="deleteSlot('armor')" class="slot slot__armor" v-for="armor in props.ship.slots.armor"></div>
                 </div>
             </div>
         </div>
@@ -57,6 +99,7 @@ const props = defineProps<{
   }
 }
 .ship__slots{
+  margin-top: 30px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -67,8 +110,13 @@ const props = defineProps<{
 .ship__slots_special,
 .ship__slots_weapon,
 .ship__slots_armor{
+  min-height: 50px;
+  padding: 0 0 0 40px;
+  border: 1px solid rgba(255, 165, 0, .1);
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   gap: 5px;
   width: 100%;
 
@@ -107,5 +155,11 @@ const props = defineProps<{
       border: 1px solid rgba(0, 49, 143, .8);
     }
   }
+}
+.add_slot_btn{
+  position: absolute;
+  left: 3px;
+  height: 30px;
+  width: 30px;
 }
 </style>
