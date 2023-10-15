@@ -5,13 +5,16 @@ import {computed, Ref, ref} from "vue";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 import ReusableDialog from "@/components/reusable/containers/ReusableDialog.vue";
 import {Fighter} from "@/typescript/classes/ships/Fighter.ts";
+import components from "@/typescript/classes/modules/all_modules/components.ts";
+import {ModuleInterface} from "@/typescript/classes/interfaces_for_classes/ModuleInterface.ts";
+import {EngineTypes, ModuleCategory} from "@/typescript/enums.ts";
 
 const chosenShipBody: Ref<ShipInterface> = ref(new Fighter())
 const freeSlots = ref(0)
 const enginesInProject = ref({
-    hyper: 0,
-    nuclear: 0,
-    reactive: 0,
+    hyper: [] as ModuleInterface[],
+    nuclear: [] as ModuleInterface[],
+    reactive: [] as ModuleInterface[],
 })
 const props = defineProps<{
     isShipConstructorVisible: boolean
@@ -76,18 +79,28 @@ const energy = computed(() => {
 //TODO двигатели в КБ
 const hyperSpeed = computed(() => {
     const hyperEngines = enginesInProject.value.hyper
-    return hyperEngines * 10
+    return hyperEngines.length * 10
 })
 const normalSpeed = computed(() => {
     const nuclearEngines = enginesInProject.value.nuclear
     const reactiveEngines = enginesInProject.value.reactive
-    return nuclearEngines * 10 + reactiveEngines * 3
+    return nuclearEngines.length * 10 + reactiveEngines.length * 3
 })
 const fightSpeed = computed(() => {
     const nuclearEngines = enginesInProject.value.nuclear
     const reactiveEngines = enginesInProject.value.reactive
-    return nuclearEngines * 0.1 + reactiveEngines * 0.03
+    return nuclearEngines.length * 0.1 + reactiveEngines.length * 0.03
 })
+
+function addModuleToProject(module: ModuleInterface){
+    if(module.category === ModuleCategory.ENGINES) {
+        if(chosenShipBody.value.slots.engines > enginesInProject.value.hyper.length + enginesInProject.value.nuclear.length + enginesInProject.value.reactive.length) {
+            if(module.engineType === EngineTypes.Reactive) {
+                enginesInProject.value.reactive.push(module)
+            }
+        }
+    }
+}
 </script>
 <template>
     <reusable-dialog  @closeDialog="$emit('close')" :visible="props.isShipConstructorVisible" header="Бюро проектировки кораблей" style="width: 80%; margin: 0 auto; height: 700px; position: relative">
@@ -102,7 +115,9 @@ const fightSpeed = computed(() => {
                         <div class="ship__slots">
                             <div class="ship__slots_engines">
                                 <reusable-button @push="addSlot('engine')" class="add_slot_btn">+</reusable-button>
-                                <div @contextmenu.prevent="deleteSlot('engine')" class="slot slot__engine" v-for="engine in chosenShipBody.slots.engines" :key="engine"></div>
+                                <div @contextmenu.prevent="deleteSlot('engine')" class="slot slot__engine" v-for="engine in chosenShipBody.slots.engines" :key="engine">
+                                    {{engine}}
+                                </div>
                             </div>
                             <div class="ship__slots_modules">
                                 <reusable-button @push="addSlot('module')" class="add_slot_btn">+</reusable-button>
@@ -173,7 +188,34 @@ const fightSpeed = computed(() => {
                 </div>
             </div>
             <div class="right">
-                Модули
+                <div v-for="engine in components.engines" :key="engine.id">
+                    <div @click="addModuleToProject(engine)" class="slot slot__engine">
+                        <div class="modules__img">
+                            <img :src="engine.img" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div v-for="module in components.modules" :key="module.id">
+                    <div @click="addModuleToProject(module)" class="slot slot__engine">
+                        <div class="modules__img">
+                            <img :src="module.img" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div v-for="weapon in components.weapons" :key="weapon.id">
+                    <div @click="addModuleToProject(weapon)" class="slot slot__engine">
+                        <div class="modules__img">
+                            <img :src="weapon.img" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div v-for="armor in components.armors" :key="armor.id">
+                    <div @click="addModuleToProject(armor)" class="slot slot__engine">
+                        <div class="modules__img">
+                            <img :src="armor.img" alt="">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </reusable-dialog>
@@ -301,5 +343,15 @@ const fightSpeed = computed(() => {
 }
 .below_zero{
   color: green;
+}
+.modules__img{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & img {
+    width: 96%;
+  }
 }
 </style>

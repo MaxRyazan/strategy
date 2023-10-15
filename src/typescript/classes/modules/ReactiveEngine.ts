@@ -1,4 +1,4 @@
-import {FuelTypes, ModuleCategory, Modules, Ships, ShipsCategory} from "@/typescript/enums.ts";
+import {EngineTypes, FuelTypes, ModuleCategory, Modules} from "@/typescript/enums.ts";
 import {ModuleInterface} from "@/typescript/classes/interfaces_for_classes/ModuleInterface.ts";
 
 export class ReactiveEngine implements ModuleInterface {
@@ -6,6 +6,7 @@ export class ReactiveEngine implements ModuleInterface {
         this.id = 1
         this.name = Modules.Reactive_Engine
         this.category = ModuleCategory.ENGINES
+        this.engineType = EngineTypes.Reactive
         this.img = 'src/images/modules/engines/reactiveEngine.png'
         this.hyperPower = 0
         this.normalPower = 10
@@ -20,8 +21,9 @@ export class ReactiveEngine implements ModuleInterface {
         }
     }
     readonly id: number;
-    readonly name: Ships
-    readonly category: ShipsCategory;
+    readonly name: Modules
+    readonly category: ModuleCategory;
+    readonly engineType: EngineTypes;
     readonly img: string
 
     readonly hyperPower: number

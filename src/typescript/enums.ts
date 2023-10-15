@@ -64,3 +64,9 @@ export enum ModuleCategory {
 export enum FuelTypes {
     RocketFuel= 'Ракетное топливо'
 }
+
+export enum EngineTypes {
+    Hyper ='Гипер',
+    Nuclear ='Ядерный',
+    Reactive ='Реактивный',
+}
