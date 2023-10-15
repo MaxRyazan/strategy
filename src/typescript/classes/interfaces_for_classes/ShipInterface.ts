@@ -7,4 +7,10 @@ export interface ShipInterface {
     category: ShipsCategory;
     img: string
     slots: ShipSlots
+
+    health: number
+    weight: number
+    signature: number
+    crew: number
+    energy: number
 }

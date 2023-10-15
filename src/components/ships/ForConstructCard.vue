@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ShipInterface} from "@/typescript/classes/interfaces_for_classes/ShipInterface.ts";
 import ReusableText from "@/components/reusable/text/ReusableTextForDescription.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import ReusableButton from "@/components/reusable/buttons/Reusable-button.vue";
 
 const freeSlots = ref(0)
@@ -40,6 +40,30 @@ function addSlot(slotType: string){
         break
     }
 }
+
+const health = computed(() => {
+    return props.ship.health
+})
+const weight = computed(() => {
+    let spec = 0
+    if(props.ship.slots.special) {
+        spec = props.ship.slots.special * 10
+    }
+    return props.ship.weight + props.ship.slots.engines * 10
+        + props.ship.slots.modules * 10
+        + props.ship.slots.weapon * 10
+        + props.ship.slots.armor * 10
+        + spec
+})
+const signature = computed(() => {
+    return props.ship.signature
+})
+const crew = computed(() => {
+    return props.ship.crew
+})
+const energy = computed(() => {
+    return props.ship.energy
+})
 </script>
 <template>
     <div class="ship">
@@ -72,7 +96,26 @@ function addSlot(slotType: string){
             </div>
         </div>
         <div class="ship__params">
-
+            <div class="ship__params_item item">
+                <reusable-text>Прочность:</reusable-text>
+                <reusable-text>{{health}}</reusable-text>
+            </div>
+            <div class="ship__params_item item">
+                <reusable-text>Масса:</reusable-text>
+                <reusable-text>{{weight}}</reusable-text>
+            </div>
+            <div class="ship__params_item item">
+                <reusable-text>Сигнатура:</reusable-text>
+                <reusable-text>{{signature}}</reusable-text>
+            </div>
+            <div class="ship__params_item item">
+                <reusable-text>Экипаж:</reusable-text>
+                <reusable-text>{{crew}}</reusable-text>
+            </div>
+            <div class="ship__params_item item">
+                <reusable-text>Энергия:</reusable-text>
+                <reusable-text :class="{sub_zero:energy<0,below_zero:energy>0}">{{energy}}</reusable-text>
+            </div>
         </div>
     </div>
 </template>
@@ -161,5 +204,18 @@ function addSlot(slotType: string){
   left: 3px;
   height: 30px;
   width: 30px;
+}
+.ship__params_item{
+  width: 100%;
+  padding: 4px 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+.sub_zero{
+  color: red;
+}
+.below_zero{
+  color: green;
 }
 </style>
