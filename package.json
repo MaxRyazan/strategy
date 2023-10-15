@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "node": "^18.14.0",
     "pinia": "^2.1.6",
     "primevue": "^3.34.1",
     "sass": "^1.66.1",

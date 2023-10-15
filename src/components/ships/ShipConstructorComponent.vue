@@ -19,7 +19,12 @@ const props = defineProps<{
 function deleteSlot(slotType: string){
     freeSlots.value += 1
     switch (slotType){
-        case 'engine': chosenShipBody.value.slots.engines -= 1;
+        case 'engine': {
+            chosenShipBody.value.slots.engines -= 1
+            let index = chosenShipBody.value.modules.findLastIndex((el: ModuleInterface) => el.category === ModuleCategory.ENGINES)
+            chosenShipBody.value.modules.splice(index, 1)
+
+        }
         break
         case 'module': chosenShipBody.value.slots.modules -= 1;
         break
@@ -99,6 +104,10 @@ function addModuleToProject(module: ModuleInterface){
     }
 }
 
+function deleteModule(module: ModuleInterface){
+    let index = chosenShipBody.value.modules.findIndex(el => el.id === module.id)
+    chosenShipBody.value.modules.splice(index, 1)
+}
 
 const engines = computed(() => chosenShipBody.value.modules.filter((module: ModuleInterface) => module.category === ModuleCategory.ENGINES))
 
@@ -117,7 +126,9 @@ const engines = computed(() => chosenShipBody.value.modules.filter((module: Modu
                             <div class="ship__slots_engines">
                                 <reusable-button @push="addSlot('engine')" class="add_slot_btn">+</reusable-button>
                                 <div @contextmenu.prevent="deleteSlot('engine')" class="slot slot__engine" v-for="(engine, idx) in chosenShipBody.slots.engines" :key="engine">
-                                    <img :src="`${engines[idx].img}`" alt="" v-if="engines.length>idx">
+                                    <div class="slot" @click="deleteModule(engines[idx])">
+                                        <img :src="`${engines[idx].img}`" alt="" v-if="engines.length>idx">
+                                    </div>
                                 </div>
                             </div>
                             <div class="ship__slots_modules">
