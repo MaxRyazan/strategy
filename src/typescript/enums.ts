@@ -53,3 +53,14 @@ export enum Ships {
 export enum ShipsCategory {
     MILITARY='Боевые'
 }
+
+export enum Modules {
+    Reactive_Engine='Реактивный двигатель'
+}
+export enum ModuleCategory {
+    ENGINES='Двигатели'
+}
+
+export enum FuelTypes {
+    RocketFuel= 'Ракетное топливо'
+}
